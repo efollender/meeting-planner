@@ -25,6 +25,10 @@ export class HomeView extends React.Component {
     this.props.dispatch({ type : 'COUNTER_INCREMENT' });
   }
 
+  _decrement () {
+    this.props.dispatch({ type: 'COUNTER_DECREMENT'});
+  }
+
   render () {
     return (
       <div className='container text-center'>
@@ -33,6 +37,10 @@ export class HomeView extends React.Component {
         <button className='btn btn-default'
                 onClick={::this._increment}>
           Increment
+        </button>
+        <button className='btn btn-default'
+                onClick={::this._decrement}>
+          Decrement
         </button>
       </div>
     );

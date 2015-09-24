@@ -54,6 +54,14 @@ const webpackConfig = {
           'autoprefixer?browsers=last 2 version',
           'sass-loader?includePaths[]=' + paths.src('styles')
         ]
+      },
+      {
+        test    : /\.styl$/,
+        loaders : [
+          'style-loader',
+          'css-loader',
+          'stylus-loader'
+        ]
       }
     ]
   },
@@ -61,6 +69,9 @@ const webpackConfig = {
     configFile  : paths.project('.eslintrc'),
     failOnError : globals.__PROD__,
     emitWarning : globals.__DEV__
+  },
+  stylus: {
+    use: [require('nib')(), require('rupture')()],
   }
 };
 

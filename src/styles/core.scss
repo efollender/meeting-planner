@@ -1,2 +1,34 @@
 @import 'base';
 @import 'vendor/normalize';
+
+.vinyl {
+  position: relative;
+  display: block;
+}
+
+.vinyl:before {
+  position: absolute;
+  display: block;
+  content: "";
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  top: 0;
+  left: 0;
+}
+
+.vinyl::after {
+  border: 2px solid #222;
+  content: "\2022";
+  color: #fff;
+  width: 60px;
+  display: block;
+  height: 60px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 60px;
+  position: absolute;
+  top: 29px;
+  left: 29px;
+  font-size: 22px;
+}
