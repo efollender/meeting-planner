@@ -10,6 +10,16 @@ const initialState = {
   queue: []
 };
 
+const toArray = (obj) => {
+  if (obj === null) {
+    return [];
+  }
+  return Object.keys(obj).map((key) => {
+    obj[key]._key === key;
+    return obj[key];
+  });
+};
+
 export default createReducer(initialState, {
   [firebase.CHANGE_TRACK] : (state, data) => {
     return {
@@ -17,6 +27,17 @@ export default createReducer(initialState, {
       currentTrack: {
         title: data.name,
         artist: data.artist
+      }
+    };
+  },
+  [firebase.GET_PLAYLIST_SUCCESS] : (state, data) => {
+    const dataArray = toArray(data).slice(1, 10);
+    return {
+      ...state,
+      queue: dataArray,
+      currentTrack:{
+        title: dataArray[8].name,
+        artist: dataArray[8].artist
       }
     };
   }

@@ -24,8 +24,8 @@ export default createReducer(initialState, {
     return {
       ...store,
       playing
-    }
-  }
+    };
+  },
   [uiConstants.PLAY] : () => {
     return {
       playing: true,
