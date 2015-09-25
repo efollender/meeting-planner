@@ -2,6 +2,10 @@ import React, {PropTypes}      from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classNames';
 import StyleSheet from '../styles/player.styl';
+import * as UIActionCreators from 'actions/ui';
+import * as SpotifyActionCreators from 'actions/spotify';
+import * as FBActionCreators from 'actions/firebase';
+import Search from '../components/Search';
 
 // We define mapStateToProps where we'd normally use the @connect
 // decorator so the data requirements are clear upfront, but then
@@ -23,27 +27,40 @@ export class PlayerView extends React.Component {
     super();
   }
   _play () {
-    this.props.dispatch({ type : 'PLAY' });
+    this.props.dispatch(UIActionCreators.play);
   }
 
   _pause () {
-    this.props.dispatch({ type: 'PAUSE'});
+    this.props.dispatch(UIActionCreators.pause);
   }
-  _currentTrack () {
-    this.props.dispatch({ type: 'GET_CURRENT_TRACK'});
+  _changeTrack () {
+    const record = this.props.uiActions.newTrack;
+    this.props.dispatch(UIActionCreators.changeRecord(record));
+  }
+  _searchForTrack (query) {
+    this.props.dispatch(SpotifyActionCreators.searchForTrack(query));
+  }
+  _addTrack (trackId) {
+    this.props.dispatch(FBActionCreators.addTrack(trackId));
+    this.setState({
+      uiActions: {
+        ...this.props.uiActions,
+        query: null
+      }
+    });
   }
   render () {
-    const {playing} = this.props.uiActions;
+    const {playing, results} = this.props.uiActions;
     const {title, artist, art} = this.props.firebase.currentTrack;
     return (
       <div className={StyleSheet.player}>
         <div className="player-current">
           <h2>{playing && 'playing'} {!playing && 'paused'}</h2>
-          <div data-background={art} 
+          <div data-background={art}
             className={classNames('turntable', 'vinyl', {
               'playing': playing
             })}
-            onClick={::this._currentTrack}>
+            onClick={::this._changeTrack}>
           </div>
           <p className="track-title">
             {title}
@@ -71,6 +88,12 @@ export class PlayerView extends React.Component {
             {artist}
           </p>
         </div>
+        <Search submitQuery={::this._searchForTrack} />
+        {results &&
+          results.map( el =>
+            <p className="track-list" key={Math.rand} onClick={this._addTrack.bind(this, el)}>{el.name}</p>
+          )
+        }
       </div>
     );
   }

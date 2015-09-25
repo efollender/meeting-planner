@@ -1,6 +1,5 @@
 import { createReducer } from 'utils';
-import firebaseUtils from '../utils/firebaseUtils';
-import firebase from '../constants/firebase';
+import firebase from 'constants/firebase';
 
 const initialState = {
   currentTrack: {
@@ -12,11 +11,13 @@ const initialState = {
 };
 
 export default createReducer(initialState, {
-  [firebase.GET_CURRENT_TRACK] : (state) => {
-    console.log(state);
+  [firebase.CHANGE_TRACK] : (state, data) => {
     return {
       ...state,
-      currentTrack: firebaseUtils.getTracks()
+      currentTrack: {
+        title: data.name,
+        artist: data.artist
+      }
     };
   }
 });

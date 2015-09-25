@@ -1,5 +1,5 @@
 import {createReducer} from 'utils';
-import uiConstants from '../constants/uiActions';
+import uiConstants from 'constants/uiActions';
 
 const initialState = {
   playing: false,
@@ -8,6 +8,24 @@ const initialState = {
 };
 
 export default createReducer(initialState, {
+  [uiConstants.ADD_TRACK] : (store, track) => {
+    return {
+      ...store,
+      newTrack: {
+        name: track.name,
+        id: track.id,
+        uri: track.uri,
+        artist: track.artists[0].name,
+        album: track.album.name
+      }
+    };
+  },
+  [uiConstants.CHANGE_RECORD] : (store) => {
+    return {
+      ...store,
+      playing
+    }
+  }
   [uiConstants.PLAY] : () => {
     return {
       playing: true,
@@ -20,5 +38,16 @@ export default createReducer(initialState, {
       paused: true
     };
   },
-  [uiConstants.SUBMIT_SEARCH] : (store) => store
+  [uiConstants.SEARCH] : (store, data) => {
+    return {
+      ...store,
+      query: data
+    };
+  },
+  [uiConstants.SEARCH_SUCCESS] : (store, data) => {
+    return {
+      ...store,
+      results: data
+    };
+  }
 });

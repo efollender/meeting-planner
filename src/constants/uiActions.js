@@ -1,7 +1,12 @@
 import {createConstants} from 'utils';
 
 export default createConstants(
+	'ADD_TRACK',
+	'CHANGE_RECORD',
 	'PLAY',
 	'PAUSE',
-	'SUBMIT_SEARCH'
+	'SEARCH',
+	'SEARCH_ERROR',
+	'SEARCH_SUCCESS',
+	'SKIP'
 );

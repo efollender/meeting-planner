@@ -1,5 +1,6 @@
 import koa    from 'koa';
 import serve  from 'koa-static';
+import cors 	from 'koa-cors';
 import config from '../config';
 
 const paths = config.get('utils_paths');
@@ -12,6 +13,10 @@ app.use(require('./middleware/gzip')());
 app.use(require('./middleware/response-time'));
 app.use(require('./middleware/logger'));
 
+//CORS
+app.use(cors({
+	origin: true
+}));
 // ------------------------------------
 // Static File Middleware
 // ------------------------------------
