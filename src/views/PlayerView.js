@@ -27,13 +27,13 @@ export class PlayerView extends React.Component {
     super();
   }
   _play () {
-    this.props.dispatch(UIActionCreators.play);
+    this.props.dispatch(UIActionCreators.play());
   }
 
   _pause () {
-    this.props.dispatch(UIActionCreators.pause);
+    this.props.dispatch(UIActionCreators.pause());
   }
-  _changeTrack () {
+  _nextTrack () {
     const record = this.props.uiActions.newTrack;
     this.props.dispatch(UIActionCreators.changeRecord(record));
   }
@@ -56,11 +56,11 @@ export class PlayerView extends React.Component {
       <div className={StyleSheet.player}>
         <div className="player-current">
           <h2>{playing && 'playing'} {!playing && 'paused'}</h2>
-          <div data-background={art}
+          <div
             className={classNames('turntable', 'vinyl', {
               'playing': playing
-            })}
-            onClick={::this._changeTrack}>
+            })}>
+            <div className="turntable-inner" style={{backgroundImage:`url(${art})`}} />
           </div>
           <p className="track-title">
             {title}
@@ -76,7 +76,7 @@ export class PlayerView extends React.Component {
             {playing &&
               <span className='fa fa-pause' onClick={::this._pause}/>
             }
-            <span className='fa fa-angle-right'/>
+            <span className='fa fa-angle-right' onClick={::this._nextTrack} />
           </div>
         </div>
         <div className="player-next">
@@ -91,7 +91,7 @@ export class PlayerView extends React.Component {
         <Search submitQuery={::this._searchForTrack} />
         {results &&
           results.map( el =>
-            <p className="track-list" key={Math.rand} onClick={this._addTrack.bind(this, el)}>{el.name}</p>
+            <p key={el.id} className="track-list" onClick={this._addTrack.bind(this, el)}>{el.name}</p>
           )
         }
       </div>

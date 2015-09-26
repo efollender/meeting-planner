@@ -7,6 +7,8 @@ export default createConstants(
   'GET_CURRENT_TRACK',
   'GET_PLAYLIST',
   'GET_PLAYLIST_SUCCESS',
+  'NEXT_TRACK',
+  'REMOVE_TRACK',
   'SET_CURRENT_TRACK',
   'SET_PLAYLIST'
 );

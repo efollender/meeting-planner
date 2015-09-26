@@ -3,7 +3,7 @@ import axios from 'axios';
 import {searchSubmitted, searchSuccess} from 'actions/ui';
 
 export function searchForTrack(query) {
-  return function (dispatch) {
+  return function cb(dispatch) {
     dispatch(searchSubmitted(query));
     const options = {
       method: 'GET',

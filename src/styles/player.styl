@@ -29,7 +29,6 @@ body
 	// 	margin 0 auto
 	// 	display inline-block
 	.turntable
-		cursor pointer
 		content ''
 		position absolute
 		display inline-block
@@ -41,14 +40,13 @@ body
 		left 50%
 		transform translateX(-50%) rotate(0deg)
 		border 2px solid #EBEBEB
-		&:after
+		.turntable-inner
 			transform-origin center center
 			background-position center center
 			background-size cover
-			background-image url('http://cdn2.pitchfork.com/albums/17735/homepage_large.6cc98599.jpg')
 			transform rotate(0deg)
 		&.playing
-			&:after
+			.turntable-inner
 				animation spin 4s linear infinite forwards
 	.player-current
 		border-radius 1em
@@ -72,6 +70,8 @@ body
 	.player-controls
 		padding .5em 0
 		color darken(#949494, 10)
+		.fa
+			cursor pointer
 		.fa-pause, .fa-play
 			margin 0 1em
 	.player-next

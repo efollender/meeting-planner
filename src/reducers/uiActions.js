@@ -16,7 +16,8 @@ export default createReducer(initialState, {
         id: track.id,
         uri: track.uri,
         artist: track.artists[0].name,
-        album: track.album.name
+        album: track.album.name,
+        art: track.album.images[1].url
       }
     };
   },

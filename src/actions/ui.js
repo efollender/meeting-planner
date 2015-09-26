@@ -38,7 +38,7 @@ export function pause () {
 }
 
 export function changeRecord (track) {
-  return function (dispatch) {
+  return function cb(dispatch) {
     dispatch(changeTrack(track));
     return {
       type: CHANGE_RECORD

@@ -26,7 +26,8 @@ export default createReducer(initialState, {
       ...state,
       currentTrack: {
         title: data.name,
-        artist: data.artist
+        artist: data.artist,
+        art: data.art
       }
     };
   },
@@ -37,7 +38,8 @@ export default createReducer(initialState, {
       queue: dataArray,
       currentTrack:{
         title: dataArray[8].name,
-        artist: dataArray[8].artist
+        artist: dataArray[8].artist,
+        art: dataArray[8].art
       }
     };
   }
