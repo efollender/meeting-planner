@@ -23,7 +23,7 @@ const toArray = (obj) => {
 export default createReducer(initialState, {
   [firebase.FETCH_FIREBASE_SUCCESS] : (store, data) => {
     const {currentTrack} = data;
-    const dataArray = toArray(data.queue).slice(1, 10);
+    const dataArray = toArray(data.queue).slice(0, 10);
     return {
       queue: dataArray,
       currentTrack: {
@@ -44,11 +44,14 @@ export default createReducer(initialState, {
     };
   },
   [firebase.GET_PLAYLIST_SUCCESS] : (state, data) => {
-    const dataArray = toArray(data).slice(1, 10);
+    const dataArray = toArray(data).slice(0, 10);
     return {
       ...state,
       queue: dataArray
     };
+  },
+  [firebase.SET_FIREBASE_SUCCESS] : (state, data) => {
+    return data;
   },
   [firebase.SET_PLAYLIST_SUCCESS] : (state) => {
     return {

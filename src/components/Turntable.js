@@ -5,14 +5,16 @@ export default class Turntable extends Component {
   static propTypes = {
     playing: PropTypes.bool,
     current: PropTypes.object,
+    queue: PropTypes.array,
     play: PropTypes.func,
     pause: PropTypes.func,
     nextTrack: PropTypes.func,
     dispatch: PropTypes.func
   }
   render() {
-    const {playing, current} = this.props;
+    const {playing, current, queue} = this.props;
     const {title, artist, art} = current;
+    const next = queue[1] || {name: 'none', artist: 'none'};
     return (
       <div>
         <div className="player-current">
@@ -32,21 +34,21 @@ export default class Turntable extends Component {
           <div className="player-controls">
             <span className='fa fa-angle-left'/>
             {!playing &&
-              <span className='fa fa-play' onClick={::this.props.play}/>
+              <span className='fa fa-play' onClick={this.props.play}/>
             }
             {playing &&
-              <span className='fa fa-pause' onClick={::this.props.pause}/>
+              <span className='fa fa-pause' onClick={this.props.pause}/>
             }
-            <span className='fa fa-angle-right' onClick={::this.props.nextTrack} />
+            <span className='fa fa-angle-right' onClick={this.props.nextTrack} />
           </div>
         </div>
         <div className="player-next">
           <p className="next-label">Next</p>
           <p className="next-track-title">
-            {title}
+            {next.name}
           </p>
           <p className="next-track-artist">
-            {artist}
+            {next.artist}
           </p>
         </div>
       </div>

@@ -40,12 +40,12 @@ export function pause () {
   };
 }
 
-export function changeRecord (track) {
+export function changeTrack (data) {
   return function cb(dispatch) {
-    dispatch(firebase.changeTrack(track));
+    dispatch(firebase.setFirebase(data));
     return {
       type: CHANGE_RECORD,
-      data: track
+      data: data
     };
   };
 }

@@ -38,8 +38,17 @@ export class PlayerView extends React.Component {
     this.props.dispatch(UIActionCreators.pause());
   }
   _nextTrack () {
-    const record = this.props.firebase.queue[0];
-    this.props.dispatch(UIActionCreators.changeRecord(record));
+    const newQueue = this.props.firebase.queue.shift();
+    const newData = {
+      queue: this.props.firebase.queue,
+      currentTrack: {
+        title: newQueue.name,
+        artist: newQueue.artist,
+        art: newQueue.art,
+        album: newQueue.album
+      }
+    };
+    this.props.dispatch(UIActionCreators.changeTrack(newData));
   }
   _searchForTrack (query) {
     this.props.dispatch(SpotifyActionCreators.searchForTrack(query));
@@ -55,15 +64,14 @@ export class PlayerView extends React.Component {
         <Turntable
           current={currentTrack}
           playing={playing}
-          nextTrack={this._nextTrack}
-          pause={this._pause}
-          play={this._play} />
-        <Search submitQuery={::this._searchForTrack} />
-        {results &&
-          results.map( el =>
-            <p key={el.id} className="track-list" onClick={this._addTrack.bind(this, el)}>{el.name}</p>
-          )
-        }
+          nextTrack={::this._nextTrack}
+          pause={::this._pause}
+          queue={queue}
+          play={::this._play} />
+        <Search
+          submitQuery={::this._searchForTrack}
+          addTrack={::this._addTrack}
+          results={results} />
         {queue.length > 1 &&
           <Queue playlist={queue} />
         }

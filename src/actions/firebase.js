@@ -10,6 +10,8 @@ import {
   GET_PLAYLIST_SUCCESS,
   SET_CURRENT_TRACK,
   SET_CURRENT_TRACK_SUCCESS,
+  SET_FIREBASE,
+  SET_FIREBASE_SUCCESS,
   SET_PLAYLIST,
   SET_PLAYLIST_SUCCESS
 } from 'constants/firebase';
@@ -87,6 +89,29 @@ export function fetchFirebase () {
   };
 }
 
+export function setFirebaseSuccess (data) {
+  return {
+    type: SET_FIREBASE_SUCCESS,
+    data: data
+  };
+}
+
+export function settingFirebase() {
+  return {
+    type: SET_FIREBASE
+  };
+}
+
+export function setFirebase(data) {
+  return function cb(dispatch) {
+    dispatch(settingFirebase);
+    return fbRef.set(data, err => {
+      if (!err) {
+        dispatch(setFirebaseSuccess(data));
+      }
+    });
+  };
+}
 
 export function setCurrentTrack() {
   return {
