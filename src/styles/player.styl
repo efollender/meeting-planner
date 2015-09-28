@@ -40,6 +40,7 @@ body
 		left 50%
 		transform translateX(-50%) rotate(0deg)
 		border 2px solid #EBEBEB
+		transition top .5s ease-in-out
 		.turntable-inner
 			transform-origin center center
 			background-position center center
@@ -48,6 +49,25 @@ body
 		&.playing
 			.turntable-inner
 				animation spin 4s linear infinite forwards
+	.needle-wrapper
+		width 20%
+		left 50%
+		position absolute
+		top 1em
+		transform-origin 65% 90%
+		transform rotate(0deg)
+		transition all 1s ease
+		img
+			max-width 100%
+	.changing-track
+		.player-current
+			.needle-wrapper
+				transform rotate(-15deg)
+			.track-info
+				transform translateX(-1000%)
+				opacity 0
+			.turntable:nth-child(1)
+				top -1000%
 	.player-current
 		border-radius 1em
 		background #EBEBEB
@@ -57,6 +77,11 @@ body
 		padding 1em
 		width 100%
 		text-align center
+		.track-info
+			opacity 1
+			transition all .5s ease
+			transform translateX(0)
+			display inline-block
 		.track-title
 			color #949494
 			text-transform lowercase

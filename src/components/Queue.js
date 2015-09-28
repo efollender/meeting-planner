@@ -8,7 +8,7 @@ export default class Queue extends Component {
   render() {
     const {playlist} = this.props;
     const allTracks = playlist.map( track =>
-        <tr>
+        <tr key={track.uri}>
           <td>{track.name}</td>
           <td>{track.artist}</td>
           <td>{track.album}</td>
@@ -27,6 +27,14 @@ export default class Queue extends Component {
           <tbody>
             {allTracks}
           </tbody>
+          <tfoot>
+            <tr>
+              <td colSpan="3">
+                <div>Next</div>
+                <div>Previous</div>
+              </td>
+            </tr>
+          </tfoot>
         </table>
       </div>
     );

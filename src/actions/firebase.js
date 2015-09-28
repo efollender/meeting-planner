@@ -145,25 +145,27 @@ export function addingTrack () {
   };
 }
 
-export function addTrackSuccess () {
+export function addTrackSuccess (data) {
   return {
-    type: ADD_TRACK_SUCCESS
+    type: ADD_TRACK_SUCCESS,
+    data: data
   };
 }
 
 export function addTrack(track) {
   return function cb(dispatch) {
     dispatch(addingTrack);
-    return fbRef.child('queue').push({
+    const newTrack = {
       name: track.name,
       id: track.id,
       uri: track.uri,
       artist: track.artists[0].name,
       album: track.album.name,
       art: track.album.images[1].url
-    }, err => {
+    };
+    return fbRef.child('queue').push(newTrack, err => {
       if (err === null) {
-        dispatch(addTrackSuccess());
+        dispatch(addTrackSuccess(newTrack));
       }
     });
   };
