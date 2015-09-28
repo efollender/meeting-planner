@@ -5,15 +5,35 @@ import {
   ADD_TRACK_SUCCESS,
   NEXT_TRACK,
   REMOVE_TRACK,
+  FETCH_FIREBASE_SUCCESS,
   GET_PLAYLIST,
-  GET_PLAYLIST_SUCCESS
+  GET_PLAYLIST_SUCCESS,
+  SET_CURRENT_TRACK,
+  SET_CURRENT_TRACK_SUCCESS,
+  SET_PLAYLIST,
+  SET_PLAYLIST_SUCCESS
 } from 'constants/firebase';
 
 const fbRef = new Firebase('https://bu.firebaseio.com/spotifyData');
 
-export function getTracks () {
+export function settingPlaylist () {
   return {
-    type: GET_PLAYLIST
+    type: SET_PLAYLIST
+  };
+}
+
+export function setPlaylistSuccess () {
+  return {
+    type: SET_PLAYLIST_SUCCESS
+  };
+}
+
+export function setPlaylist (playlist) {
+  return function cb(dispatch) {
+    dispatch(settingPlaylist);
+    return fbRef.child('queue').set(playlist, err => {
+      if (!err) { dispatch(setPlaylistSuccess); }
+    });
   };
 }
 
@@ -30,6 +50,12 @@ export function removeTrack (track) {
   };
 }
 
+export function getTracks () {
+  return {
+    type: GET_PLAYLIST
+  };
+}
+
 export function getTracksSuccess (tracks) {
   return {
     type: GET_PLAYLIST_SUCCESS,
@@ -37,11 +63,53 @@ export function getTracksSuccess (tracks) {
   };
 }
 
-export function changeTrack () {
+export function fetchTracks () {
   return function cb(dispatch) {
     dispatch(getTracks);
     return fbRef.child('queue').once('value', snapshot => {
       dispatch(getTracksSuccess(snapshot.val()));
+    });
+  };
+}
+
+export function fetchFirebaseSuccess (res) {
+  return {
+    type: FETCH_FIREBASE_SUCCESS,
+    data: res
+  };
+}
+
+export function fetchFirebase () {
+  return function cb(dispatch) {
+    return fbRef.once('value', snapshot => {
+      dispatch(fetchFirebaseSuccess(snapshot.val()));
+    });
+  };
+}
+
+
+export function setCurrentTrack() {
+  return {
+    type: SET_CURRENT_TRACK
+  };
+}
+
+export function setCurrentTrackSuccess(track) {
+  return {
+    type: SET_CURRENT_TRACK_SUCCESS,
+    data: track
+  };
+}
+
+export function changeTrack (track) {
+  return function cb(dispatch) {
+    dispatch(setCurrentTrack);
+    return fbRef.child('currentTrack').set(track, err => {
+      if (!err) {
+        dispatch(setCurrentTrackSuccess(track));
+      } else {
+        dispatch(setCurrentTrackSuccess(track));
+      }
     });
   };
 }
@@ -52,10 +120,9 @@ export function addingTrack () {
   };
 }
 
-export function addTrackSuccess (res) {
+export function addTrackSuccess () {
   return {
-    type: ADD_TRACK_SUCCESS,
-    data: res
+    type: ADD_TRACK_SUCCESS
   };
 }
 
@@ -71,10 +138,8 @@ export function addTrack(track) {
       art: track.album.images[1].url
     }, err => {
       if (err === null) {
-        dispatch(addTrackSuccess(snapshot.val())));
-      } else {
-
+        dispatch(addTrackSuccess());
       }
-    }
+    });
   };
 }

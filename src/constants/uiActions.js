@@ -8,5 +8,6 @@ export default createConstants(
 	'SEARCH',
 	'SEARCH_ERROR',
 	'SEARCH_SUCCESS',
-	'SKIP'
+	'SKIP',
+	'TRACK_ADDED'
 );

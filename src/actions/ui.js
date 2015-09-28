@@ -7,12 +7,15 @@ import {
     SEARCH_SUCCESS
   } from 'constants/uiActions';
 
-import {changeTrack} from 'actions/firebase';
+import * as firebase from 'actions/firebase';
 
 export function addTrack (track) {
-  return {
-    type: ADD_TRACK,
-    data: track
+  return function cb(dispatch) {
+    dispatch(firebase.addTrack(track));
+    return {
+      type: ADD_TRACK,
+      data: track
+    };
   };
 }
 
@@ -39,9 +42,10 @@ export function pause () {
 
 export function changeRecord (track) {
   return function cb(dispatch) {
-    dispatch(changeTrack(track));
+    dispatch(firebase.changeTrack(track));
     return {
-      type: CHANGE_RECORD
+      type: CHANGE_RECORD,
+      data: track
     };
   };
 }

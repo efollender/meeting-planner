@@ -1,11 +1,12 @@
 import React, {PropTypes}      from 'react';
 import { connect } from 'react-redux';
-import classNames from 'classNames';
 import StyleSheet from '../styles/player.styl';
 import * as UIActionCreators from 'actions/ui';
 import * as SpotifyActionCreators from 'actions/spotify';
 import * as FBActionCreators from 'actions/firebase';
-import Search from '../components/Search';
+import Search from 'components/Search';
+import Queue from 'components/Queue';
+import Turntable from 'components/Turntable';
 
 // We define mapStateToProps where we'd normally use the @connect
 // decorator so the data requirements are clear upfront, but then
@@ -26,6 +27,9 @@ export class PlayerView extends React.Component {
   constructor () {
     super();
   }
+  componentWillMount() {
+    this.props.dispatch(FBActionCreators.fetchFirebase());
+  }
   _play () {
     this.props.dispatch(UIActionCreators.play());
   }
@@ -34,65 +38,34 @@ export class PlayerView extends React.Component {
     this.props.dispatch(UIActionCreators.pause());
   }
   _nextTrack () {
-    const record = this.props.uiActions.newTrack;
+    const record = this.props.firebase.queue[0];
     this.props.dispatch(UIActionCreators.changeRecord(record));
   }
   _searchForTrack (query) {
     this.props.dispatch(SpotifyActionCreators.searchForTrack(query));
   }
   _addTrack (trackId) {
-    this.props.dispatch(FBActionCreators.addTrack(trackId));
-    this.setState({
-      uiActions: {
-        ...this.props.uiActions,
-        query: null
-      }
-    });
+    this.props.dispatch(UIActionCreators.addTrack(trackId));
   }
   render () {
     const {playing, results} = this.props.uiActions;
-    const {title, artist, art} = this.props.firebase.currentTrack;
+    const {queue, currentTrack} = this.props.firebase;
     return (
       <div className={StyleSheet.player}>
-        <div className="player-current">
-          <h2>{playing && 'playing'} {!playing && 'paused'}</h2>
-          <div
-            className={classNames('turntable', 'vinyl', {
-              'playing': playing
-            })}>
-            <div className="turntable-inner" style={{backgroundImage:`url(${art})`}} />
-          </div>
-          <p className="track-title">
-            {title}
-          </p>
-          <p className="track-artist">
-            {artist}
-          </p>
-          <div className="player-controls">
-            <span className='fa fa-angle-left'/>
-            {!playing &&
-              <span className='fa fa-play' onClick={::this._play}/>
-            }
-            {playing &&
-              <span className='fa fa-pause' onClick={::this._pause}/>
-            }
-            <span className='fa fa-angle-right' onClick={::this._nextTrack} />
-          </div>
-        </div>
-        <div className="player-next">
-          <p className="next-label">Next</p>
-          <p className="next-track-title">
-            {title}
-          </p>
-          <p className="next-track-artist">
-            {artist}
-          </p>
-        </div>
+        <Turntable
+          current={currentTrack}
+          playing={playing}
+          nextTrack={this._nextTrack}
+          pause={this._pause}
+          play={this._play} />
         <Search submitQuery={::this._searchForTrack} />
         {results &&
           results.map( el =>
             <p key={el.id} className="track-list" onClick={this._addTrack.bind(this, el)}>{el.name}</p>
           )
+        }
+        {queue.length > 1 &&
+          <Queue playlist={queue} />
         }
       </div>
     );

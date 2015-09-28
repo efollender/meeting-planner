@@ -3,9 +3,9 @@ import firebase from 'constants/firebase';
 
 const initialState = {
   currentTrack: {
-    title: 'The house that heaven built',
-    artist: 'japandroids',
-    art: 'http://cdn2.pitchfork.com/albums/17735/homepage_large.6cc98599.jpg'
+    title: '',
+    artist: '',
+    art: ''
   },
   queue: []
 };
@@ -21,7 +21,19 @@ const toArray = (obj) => {
 };
 
 export default createReducer(initialState, {
-  [firebase.CHANGE_TRACK] : (state, data) => {
+  [firebase.FETCH_FIREBASE_SUCCESS] : (store, data) => {
+    const {currentTrack} = data;
+    const dataArray = toArray(data.queue).slice(1, 10);
+    return {
+      queue: dataArray,
+      currentTrack: {
+        title: currentTrack.name,
+        artist: currentTrack.artist,
+        art: currentTrack.art
+      }
+    };
+  },
+  [firebase.SET_CURRENT_TRACK_SUCCESS] : (state, data) => {
     return {
       ...state,
       currentTrack: {
@@ -35,12 +47,18 @@ export default createReducer(initialState, {
     const dataArray = toArray(data).slice(1, 10);
     return {
       ...state,
-      queue: dataArray,
-      currentTrack:{
-        title: dataArray[8].name,
-        artist: dataArray[8].artist,
-        art: dataArray[8].art
-      }
+      queue: dataArray
+    };
+  },
+  [firebase.SET_PLAYLIST_SUCCESS] : (state) => {
+    return {
+      ...state
+    };
+  },
+  [firebase.ADD_TRACK_SUCCESS] : (state) => {
+    return {
+      ...state
+
     };
   }
 });

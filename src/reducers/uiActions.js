@@ -18,23 +18,28 @@ export default createReducer(initialState, {
         artist: track.artists[0].name,
         album: track.album.name,
         art: track.album.images[1].url
-      }
+      },
+      query: null,
+      results: []
     };
   },
   [uiConstants.CHANGE_RECORD] : (store) => {
     return {
       ...store,
-      playing
+      playing,
+      results: []
     };
   },
-  [uiConstants.PLAY] : () => {
+  [uiConstants.PLAY] : (store) => {
     return {
+      ...store,
       playing: true,
       paused: false
     };
   },
-  [uiConstants.PAUSE] : () => {
+  [uiConstants.PAUSE] : (store) => {
     return {
+      ...store,
       playing: false,
       paused: true
     };
