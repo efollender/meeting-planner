@@ -60,21 +60,23 @@ export class PlayerView extends React.Component {
     const {playing, results} = this.props.uiActions;
     const {queue, currentTrack} = this.props.firebase;
     return (
-      <div className={StyleSheet.player}>
-        <Turntable
-          current={currentTrack}
-          playing={playing}
-          nextTrack={::this._nextTrack}
-          pause={::this._pause}
-          queue={queue}
-          play={::this._play} />
-        <Search
-          submitQuery={::this._searchForTrack}
-          addTrack={::this._addTrack}
-          results={results} />
+      <div className='component-wrapper'>
         {queue.length > 1 &&
           <Queue playlist={queue} />
         }
+        <div className={StyleSheet.player}>
+          <Turntable
+            current={currentTrack}
+            playing={playing}
+            nextTrack={::this._nextTrack}
+            pause={::this._pause}
+            queue={queue}
+            play={::this._play} />
+          <Search
+            submitQuery={::this._searchForTrack}
+            addTrack={::this._addTrack}
+            results={results} />
+        </div>
       </div>
     );
   }

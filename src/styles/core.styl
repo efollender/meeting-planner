@@ -1,0 +1,48 @@
+// @import 'base';
+// @import 'vendor/normalize';
+
+.vinyl
+  position: relative
+  display: block
+
+.vinyl:before 
+  position: absolute
+  display: block
+  content: ""
+  width: 100%
+  height: 100%
+  border-radius: 100%
+  top: 0
+  left: 0
+.turntable-inner 
+  border: 2px solid #222
+  content: "\2022"
+  color: #fff
+  width: 60px
+  display: block
+  height: 60px
+  border-radius: 50%
+  text-align: center
+  line-height: 60px
+  position: absolute
+  top: 29px
+  left: 29px
+  font-size: 22px
+.turntable
+  content ''
+  position absolute
+  display inline-block
+  border-radius 100%
+  width 120px
+  height 120px
+  background radial-gradient(center, ellipse cover, #2f2f2e 0%, #404340 1%, #2f2f2e 2%, #404340 3%, #2f2f2e 4%, #404340 5%, #2f2f2e 6%, #404340 7%, #2f2f2e 8%, #404340 9%, #2f2f2e 10%, #404340 11%, #2f2f2e 12%, #404340 13%, #2f2f2e 14%, #404340 15%, #2f2f2e 16%, #404340 17%, #2f2f2e 18%, #404340 19%, #2f2f2e 20%, #404340 21%, #2f2f2e 22%, #404340 23%, #2f2f2e 24%, #404340 25%, #2f2f2e 26%, #404340 27%, #2f2f2e 28%, #404340 29%, #2f2f2e 30%, #404340 31%, #2f2f2e 32%, #404340 33%, #2f2f2e 34%, #404340 35%, #2f2f2e 36%, #404340 37%, #2f2f2e 38%, #404340 39%, #2f2f2e 40%, #404340 41%, #2f2f2e 42%, #404340 43%, #2f2f2e 44%, #404340 45%, #2f2f2e 46%, #404340 47%, #2f2f2e 48%, #404340 49%, #2f2f2e 50%, #404340 51%, #2f2f2e 52%, #404340 53%, #2f2f2e 54%, #404340 55%, #2f2f2e 56%, #404340 57%, #2f2f2e 58%, #404340 59%, #2f2f2e 60%, #404340 61%, #2f2f2e 62%, #404340 63%, #2f2f2e 64%, #404340 65%, #2f2f2e 66%, #404340 67%, #2f2f2e 68%, #404340 69%, #2f2f2e 70%, #404340 71%, #2f2f2e 72%, #404340 73%, #2f2f2e 74%, #404340 75%, #2f2f2e 76%, #404340 77%, #2f2f2e 78%, #404340 79%, #2f2f2e 80%, #404340 81%, #2f2f2e 82%, #404340 83%, #2f2f2e 84%, #404340 85%, #2f2f2e 86%, #404340 87%, #2f2f2e 88%, #404340 89%, #2f2f2e 90%, #404340 91%, #2f2f2e 92%, #404340 93%, #2f2f2e 94%, #404340 95%, #2f2f2e 96%, #404340 97%, #404340 97%, #2f2f2e 98%)
+  top -60px
+  left 50%
+  transform translateX(-50%) rotate(0deg)
+  border 2px solid #EBEBEB
+  transition top .5s ease-in-out
+  .turntable-inner
+    transform-origin center center
+    background-position center center
+    background-size cover
+    transform rotate(0deg)
