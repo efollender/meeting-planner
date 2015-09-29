@@ -22,6 +22,10 @@ export default class Search extends Component {
       findDOMNode(this.refs.searchQuery).value = '';
     }
   }
+  _addTrack(el) {
+    this.setState({query: ''});
+    this.props.addTrack(el);
+  }
   render() {
     const {results} = this.props;
     return (
@@ -33,9 +37,9 @@ export default class Search extends Component {
             placeholder="Search for a track"
             ref="searchQuery"/>
         </form>
-        {results &&
+        {(results && this.state.query.length > 1) &&
           results.map( el =>
-            <p key={el.id} className="track-list" onClick={this.props.addTrack.bind(this, el)}>{el.name}</p>
+            <p key={el.id} className="track-list" onClick={this._addTrack.bind(this, el)}>{el.name}</p>
           )
         }
       </div>
