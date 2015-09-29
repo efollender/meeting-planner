@@ -3,8 +3,6 @@ import Firebase from 'firebase';
 import {
   ADDING_TRACK,
   ADD_TRACK_SUCCESS,
-  NEXT_TRACK,
-  REMOVE_TRACK,
   FETCH_FIREBASE_SUCCESS,
   GET_PLAYLIST,
   GET_PLAYLIST_SUCCESS,
@@ -33,22 +31,9 @@ export function setPlaylistSuccess () {
 export function setPlaylist (playlist) {
   return function cb(dispatch) {
     dispatch(settingPlaylist);
-    return fbRef.child('queue').set(playlist, err => {
+    return fbRef.child('playlist').set(playlist, err => {
       if (!err) { dispatch(setPlaylistSuccess); }
     });
-  };
-}
-
-export function nextTrack() {
-  return {
-    type: NEXT_TRACK
-  };
-}
-
-export function removeTrack (track) {
-  return {
-    type: REMOVE_TRACK,
-    data: track
   };
 }
 
@@ -68,7 +53,7 @@ export function getTracksSuccess (tracks) {
 export function fetchTracks () {
   return function cb(dispatch) {
     dispatch(getTracks);
-    return fbRef.child('queue').once('value', snapshot => {
+    return fbRef.child('playlist').once('value', snapshot => {
       dispatch(getTracksSuccess(snapshot.val()));
     });
   };
@@ -152,7 +137,7 @@ export function addTrackSuccess (data) {
   };
 }
 
-export function addTrack(track) {
+export function addTrack(track, queue) {
   return function cb(dispatch) {
     dispatch(addingTrack);
     const newTrack = {
@@ -163,7 +148,10 @@ export function addTrack(track) {
       album: track.album.name,
       art: track.album.images[1].url
     };
-    return fbRef.child('queue').push(newTrack, err => {
+    return fbRef.update({
+      playlist: queue.concat(newTrack),
+      addSong: newTrack
+    }, err => {
       if (err === null) {
         dispatch(addTrackSuccess(newTrack));
       }

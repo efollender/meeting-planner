@@ -2,7 +2,6 @@ import koa    from 'koa';
 import serve  from 'koa-static';
 import cors 	from 'koa-cors';
 import config from '../config';
-import spotify from './middleware/node-spotify';
 
 const paths = config.get('utils_paths');
 const app   = koa();

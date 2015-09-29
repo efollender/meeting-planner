@@ -5,13 +5,16 @@ const initialState = {
   currentTrack: {
     title: '',
     artist: '',
-    art: ''
+    art: '',
+    uri: ''
   },
-  queue: []
+  playlist: [],
+  paused: false,
+  playing: true
 };
 
 const toArray = (obj) => {
-  if (obj === null) {
+  if ((obj === null) || (obj === undefined)) {
     return [];
   }
   return Object.keys(obj).map((key) => {
@@ -23,13 +26,15 @@ const toArray = (obj) => {
 export default createReducer(initialState, {
   [firebase.FETCH_FIREBASE_SUCCESS] : (store, data) => {
     const {currentTrack} = data;
-    const dataArray = toArray(data.queue);
+    const dataArray = toArray(data.playlist);
     return {
-      queue: dataArray,
+      ...data,
+      playlist: dataArray,
       currentTrack: {
         title: currentTrack.name,
         artist: currentTrack.artist,
-        art: currentTrack.art
+        art: currentTrack.art,
+        uri: currentTrack.uri
       }
     };
   },
@@ -39,15 +44,16 @@ export default createReducer(initialState, {
       currentTrack: {
         title: data.name,
         artist: data.artist,
-        art: data.art
+        art: data.art,
+        uri: currentTrack.uri
       }
     };
   },
   [firebase.GET_PLAYLIST_SUCCESS] : (state, data) => {
-    const dataArray = toArray(data);
+    const dataArray = toArray(data.playlist);
     return {
       ...state,
-      queue: dataArray
+      playlist: dataArray
     };
   },
   [firebase.SET_FIREBASE_SUCCESS] : (state, data) => {
@@ -61,7 +67,7 @@ export default createReducer(initialState, {
   [firebase.ADD_TRACK_SUCCESS] : (state, track) => {
     return {
       ...state,
-      queue: state.queue.concat(track)
+      playlist: state.playlist.concat(track)
     };
   }
 });

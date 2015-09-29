@@ -1,10 +1,28 @@
 import {createReducer} from 'utils';
 import uiConstants from 'constants/uiActions';
 
+const toArray = (obj) => {
+  if ((obj === null) || (obj === undefined)) {
+    return [];
+  }
+  return Object.keys(obj).map((key) => {
+    obj[key]._key === key;
+    return obj[key];
+  });
+};
+
 const initialState = {
-  playing: false,
-  paused: true,
-  query: null
+  currentTrack: {
+    title: '',
+    artist: '',
+    art: '',
+    id: '',
+    uri: ''
+  },
+  playlist: [],
+  paused: false,
+  results: [],
+  query: ''
 };
 
 export default createReducer(initialState, {
@@ -26,21 +44,18 @@ export default createReducer(initialState, {
   [uiConstants.CHANGE_RECORD] : (store) => {
     return {
       ...store,
-      playing,
       results: []
     };
   },
   [uiConstants.PLAY] : (store) => {
     return {
       ...store,
-      playing: true,
       paused: false
     };
   },
   [uiConstants.PAUSE] : (store) => {
     return {
       ...store,
-      playing: false,
       paused: true
     };
   },
@@ -54,6 +69,14 @@ export default createReducer(initialState, {
     return {
       ...store,
       results: data
+    };
+  },
+  [uiConstants.SET_DATA] : (store, data) => {
+    const dataArray = toArray(data.playlist);
+    return {
+      ...store,
+      ...data,
+      playlist: dataArray
     };
   }
 });

@@ -3,9 +3,9 @@ import classNames from 'classNames';
 
 export default class Turntable extends Component {
   static propTypes = {
-    playing: PropTypes.bool,
+    paused: PropTypes.bool,
     current: PropTypes.object,
-    queue: PropTypes.array,
+    playlist: PropTypes.array,
     play: PropTypes.func,
     pause: PropTypes.func,
     nextTrack: PropTypes.func
@@ -21,29 +21,29 @@ export default class Turntable extends Component {
     setTimeout(()=>{
       this.setState({
         updating: false,
-        newRecord: this.props.queue[0].art
+        newRecord: this.props.playlist[0].art
       });
       this.props.nextTrack();
     }, 3000);
   }
   render() {
-    const {playing, current, queue} = this.props;
-    const {title, artist, art} = current;
-    const next = queue[0] || {name: 'none', artist: 'none'};
+    const {paused, current, playlist} = this.props;
+    const {name, artist, art} = current;
+    const next = playlist[0] || {name: 'none', artist: 'none'};
     return (
       <div className={classNames({'changing-track': this.state.updating})}>
         <div className="player-current">
-          <h2>{playing && 'playing'} {!playing && 'paused'}</h2>
+          <h2>{!paused && 'playing'} {paused && 'paused'}</h2>
           <div
             className={classNames('turntable', 'vinyl', {
-              'playing': playing
+              'playing': !paused
             })}>
             <div className="turntable-inner" style={{backgroundImage:`url(${art})`}} />
           </div>
           {this.state.newRecord &&
             <div
             className={classNames('turntable', 'vinyl', {
-              'playing': playing
+              'playing': !paused
             })}>
               <div
                 className="turntable-inner"
@@ -56,7 +56,7 @@ export default class Turntable extends Component {
           </div>
           <div className="track-info">
             <p className="track-title">
-            {title}
+            {name}
             </p>
             <p className="track-artist">
               {artist}
@@ -64,10 +64,10 @@ export default class Turntable extends Component {
           </div>
           <div className="player-controls">
             <span className='fa fa-angle-left'/>
-            {!playing &&
+            {paused &&
               <span className='fa fa-play' onClick={this.props.play}/>
             }
-            {playing &&
+            {!paused &&
               <span className='fa fa-pause' onClick={this.props.pause}/>
             }
             <span className='fa fa-angle-right' onClick={::this._changeRecord} />

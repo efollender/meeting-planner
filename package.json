@@ -30,6 +30,7 @@
     "koa-cors": "0.0.16",
     "koa-static": "^1.4.9",
     "node-spotify": "^0.7.1",
+    "object-assign": "^4.0.1",
     "react": "^0.14.0-rc1",
     "react-dom": "^0.14.0-rc1",
     "react-redux": "^3.0.0-alpha",

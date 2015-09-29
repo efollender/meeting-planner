@@ -5,9 +5,18 @@ export default class Queue extends Component {
   static propTypes = {
     playlist: PropTypes.array
   }
+  toArray(obj) {
+    if ((obj === null) || (obj === undefined)) {
+      return [];
+    }
+    return Object.keys(obj).map((key) => {
+      obj[key]._key === key;
+      return obj[key];
+    });
+  }
   render() {
     const {playlist} = this.props;
-    const allTracks = playlist.map( track =>
+    const allTracks = this.toArray(playlist).map( track =>
         <tr key={track.uri}>
           <td>{track.name}</td>
           <td>{track.artist}</td>
