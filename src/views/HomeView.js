@@ -1,5 +1,6 @@
 import React       from 'react';
 import { connect } from 'react-redux';
+import * as uiActions from 'actions/ui';
 
 // We define mapStateToProps where we'd normally use the @connect
 // decorator so the data requirements are clear upfront, but then
@@ -7,33 +8,36 @@ import { connect } from 'react-redux';
 // the component can be tested w/ and w/o being connected.
 // See: http://rackt.github.io/redux/docs/recipes/WritingTests.html
 const mapStateToProps = (state) => ({
-  counter : state.counter
+  ui : state.ui
 });
 export class HomeView extends React.Component {
   static propTypes = {
     dispatch : React.PropTypes.func,
-    counter  : React.PropTypes.number
+    ui  : React.PropTypes.object
   }
 
   constructor () {
     super();
   }
-
+  _signIn (e) {
+    e.preventDefault();
+    this.props.dispatch(uiActions.signIn());
+  }
   // normally you'd import an action creator, but I don't want to create
   // a file that you're just going to delete anyways!
-  _increment () {
-    this.props.dispatch({ type : 'COUNTER_INCREMENT' });
-  }
 
   render () {
+    const {session} = this.props.ui;
     return (
       <div className='container text-center'>
-        <h1>Welcome to the React Redux Starter Kit</h1>
-        <h2>Sample Counter: {this.props.counter}</h2>
-        <button className='btn btn-default'
-                onClick={::this._increment}>
-          Increment
-        </button>
+        <h1>Brooklyn United Meeting Command Center</h1>
+        <h2>Login with your BU email</h2>
+        <form>
+          <button onClick={::this._signIn}>Sign in with Google</button>
+          {session.userName &&
+            <h3>Hi, {session.userName}!</h3>
+          }
+        </form>
       </div>
     );
   }

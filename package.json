@@ -17,6 +17,7 @@
   "author": "David Zukowski <david@zuko.me> (http://zuko.me)",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.7.0",
     "babel": "^5.8.23",
     "firebase": "^2.3.1",
     "history": "^1.9.0",
