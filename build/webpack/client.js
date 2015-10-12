@@ -47,6 +47,10 @@ const webpackConfig = {
         loaders : ['babel?optional[]=runtime']
       },
       {
+        test : /\.json$/,
+        loaders : ['json-loader']
+      },
+      {
         test    : /\.scss$/,
         loaders : [
           'style-loader',

@@ -47,6 +47,10 @@ const webpackConfig = {
         loaders : ['babel?optional[]=runtime&stage=0']
       },
       {
+        test : /\.json$/,
+        loaders : ['json-loader']
+      },
+      {
         test    : /\.scss$/,
         loaders : [
           'css/locals?module&localIdentName=[name]__[local]___[hash:base64:5]',

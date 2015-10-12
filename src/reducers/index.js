@@ -1,8 +1,6 @@
 import { combineReducers } from 'redux';
-import uiActions from './uiActions';
-import firebase from './firebase';
+import ui from './ui';
 
 export default combineReducers({
-  uiActions,
-  firebase
+  ui
 });

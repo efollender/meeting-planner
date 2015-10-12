@@ -1,103 +1,122 @@
-import {
-    ADD_TRACK,
-    CHANGE_RECORD,
-    CHANGE_RECORD_SUCCESS,
-    PLAY,
-    PAUSE,
-    SEARCH,
-    SET_DATA,
-    SEARCH_SUCCESS
-  } from 'constants/uiActions';
+import * as uiConstants from 'constants/uiConstants';
+import * as fbUtils from 'utils/firebaseUtils';
 
-import * as firebase from 'utils/firebaseUtils';
+// const checkValidity = function(email) {
+//   const regex = /(@brooklynunited.com)/;
+//   return regex.test(email);
+// }
 
-// const handleErr = (err) => {
-//   if (err) return 'There was an error :(';
-//   return false;
-// };
-
-export function setData(data) {
+export function signInRequest() {
   return {
-    type: SET_DATA,
-    data: data
+    type: uiConstants.SIGN_IN_REQUEST
   };
 }
 
-export function addedTrack(track) {
+export function signInSuccess(res) {
+  fbUtils.persistUser(res);
   return {
-    type: ADD_TRACK,
-    data: track
+    type: uiConstants.SIGN_IN_SUCCESS,
+    data: res
   };
 }
 
-export function addTrack (track) {
-  return function cb(dispatch) {
-    return firebase.addTrack(track, (err) => {
-      if (!err) dispatch(addedTrack(track));
-    });
-  };
-}
-
-export function searchSubmitted (query) {
+export function signInInvalid(res) {
   return {
-    type: SEARCH,
-    data: query
+    type: uiConstants.SIGN_IN_INVALID,
+    data: res
   };
 }
 
-export function searchSuccess (response) {
+export function signInError(res) {
   return {
-    type: SEARCH_SUCCESS,
-    data: response
+    type: uiConstants.SIGN_IN_ERROR,
+    data: res
   };
 }
 
-export function pausePlayer() {
+export function sessionRequest() {
   return {
-    type: PAUSE
+    type: uiConstants.SESSION_REQUEST
   };
 }
 
-export function unPausePlayer() {
+export function scheduleRequest() {
   return {
-    type: PLAY
+    type: uiConstants.SCHEDULE_REQUEST
   };
 }
 
-export function pause () {
+export function scheduleReceived(sched) {
+  return {
+    type: uiConstants.SCHEDULE_RECEIVED,
+    data: sched
+  };
+}
+
+export function roomStatusReceived(status) {
+  return {
+    type: uiConstants.ROOM_STATUS_RECEIVED,
+    data: status
+  };
+}
+
+export function checkRooms() {
   return dispatch => {
-    return firebase.pause((err) => {
-      if (err === null) dispatch(pausePlayer());
+    return fbUtils.getSession(res => {
+      if (res.google) {
+        const token = res.google.accessToken;
+        return fbUtils.checkRooms(token, rooms => {
+          dispatch(roomStatusReceived(rooms));
+        });
+      }
     });
   };
 }
 
-export function play () {
+export function getSchedule() {
   return dispatch => {
-    return firebase.play((err) => {
-      if (err === null) dispatch(unPausePlayer());
+    dispatch(scheduleRequest());
+    return fbUtils.getSession( res =>{
+      if (res.google) {
+        const token = res.google.accessToken;
+        return fbUtils.getSchedule(token, sched => {
+          dispatch(scheduleReceived(sched));
+        });
+      }
     });
   };
 }
 
-export function changingTrack () {
-  return {
-    type: CHANGE_RECORD
-  };
-}
-
-export function changeTrackSuccess (data) {
-  return {
-    type: CHANGE_RECORD_SUCCESS,
-    data: data
-  };
-}
-
-export function changeTrack (data) {
-  return function cb(dispatch) {
-    dispatch(changingTrack);
-    return firebase.setCurrent(data, err => {
-      if (err === null) dispatch(changeTrackSuccess(data));
+export function getSession() {
+  return dispatch => {
+    dispatch(sessionRequest());
+    return fbUtils.getSession( res => {
+      if (res.google) {
+        dispatch(signInSuccess(res));
+      }
     });
+  };
+}
+
+export function signIn() {
+  return (dispatch) => {
+    dispatch(signInRequest());
+    return fbUtils.signInWithGoogle( res => {
+      if (res.error) {
+        dispatch(signInError({error: res.error}));
+      } else if (!res.valid) {
+        fbUtils.logOut();
+        dispatch(signInInvalid({message: 'invalid email'}));
+      } else {
+        dispatch(signInSuccess({...res.authData, schedule: res.schedule}));
+      }
+    });
+  };
+}
+
+export function logOut() {
+  fbUtils.logOut();
+  return {
+    type: uiConstants.LOG_OUT
   };
 }
