@@ -1,6 +1,15 @@
 import {createConstants} from 'utils';
 
 export default createConstants(
+	'GET_SESSION',
+	'LOG_OUT',
+	'GET_SCHEDULE',
+	'GET_ROOM_STATUS',
+	'ROOM_STATUS_REQUEST',
+	'ROOM_STATUS_RECEIVED',
+	'SCHEDULE_REQUEST',
+	'SCHEDULE_RECEIVED',
+	'SESSION_REQUEST',
   'SIGN_IN',
   'SIGN_IN_REQUEST',
   'SIGN_IN_ERROR',

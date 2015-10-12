@@ -1,46 +1,45 @@
-import React       from 'react';
-import { connect } from 'react-redux';
-import * as uiActions from 'actions/ui';
+import React, {Component, PropTypes}       from 'react';
+import classNames from 'classnames';
+import {connect} from 'react-redux';
+import * as actions from 'actions/ui';
 
-// We define mapStateToProps where we'd normally use the @connect
-// decorator so the data requirements are clear upfront, but then
-// export the decorated component after the main class definition so
-// the component can be tested w/ and w/o being connected.
-// See: http://rackt.github.io/redux/docs/recipes/WritingTests.html
 const mapStateToProps = (state) => ({
   ui : state.ui
 });
-export class HomeView extends React.Component {
+class HomeView extends Component {
   static propTypes = {
-    dispatch : React.PropTypes.func,
-    ui  : React.PropTypes.object
+    ui: PropTypes.object,
+    dispatch: PropTypes.func
   }
-
-  constructor () {
-    super();
+  constructor (props) {
+    super(props);
   }
-  _signIn (e) {
-    e.preventDefault();
-    this.props.dispatch(uiActions.signIn());
+  componentDidMount() {
+    this.props.dispatch(actions.checkRooms());
   }
-  // normally you'd import an action creator, but I don't want to create
-  // a file that you're just going to delete anyways!
-
   render () {
-    const {session} = this.props.ui;
+    const {loggedIn, roomStatus} = this.props.ui;
     return (
-      <div className='container text-center'>
-        <h1>Brooklyn United Meeting Command Center</h1>
-        <h2>Login with your BU email</h2>
-        <form>
-          <button onClick={::this._signIn}>Sign in with Google</button>
-          {session.userName &&
-            <h3>Hi, {session.userName}!</h3>
-          }
-        </form>
+      <div className="home-container">
+        {loggedIn &&
+          <div className="current-status">
+            <h3>Current room status</h3>
+            <div className={classNames('room', {
+              available: !roomStatus.lounge.taken,
+              occupied: roomStatus.lounge.taken
+            })} data-room="Lounge" />
+            <div className={classNames('room', {
+              available: !roomStatus.smalls.taken,
+              occupied: roomStatus.smalls.taken
+            })} data-room="Smalls" />
+            <div className={classNames('room', {
+              available: !roomStatus.biggie.taken,
+              occupied: roomStatus.biggie.taken
+            })} data-room="Biggie" />
+          </div>
+        }
       </div>
     );
   }
 }
-
 export default connect(mapStateToProps)(HomeView);

@@ -1,13 +1,16 @@
-import { compose, createStore } from 'redux';
+import { compose, createStore, applyMiddleware } from 'redux';
 import { devTools } from 'redux-devtools';
 import rootReducer from 'reducers';
+import thunk from 'redux-thunk';
 
 let createStoreWithMiddleware;
 
 if (__DEBUG__) {
-  createStoreWithMiddleware = compose(devTools())(createStore);
+  createStoreWithMiddleware = compose(
+    applyMiddleware(thunk),
+    devTools())(createStore);
 } else {
-  createStoreWithMiddleware = createStore;
+  createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 }
 
 export default function configureStore (initialState) {

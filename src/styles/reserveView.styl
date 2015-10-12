@@ -1,0 +1,30 @@
+@import 'core'
+
+:local(.container)
+	text-align left
+	width 50%
+	padding 1em
+	.room-choices
+		input
+			margin 1rem
+			display none
+			&:checked + span
+				color white
+		label
+			background lighten(greyblue, 15)
+			letter-spacing 1px
+			color darkblue
+			margin calc(1em - 2px)
+			padding 1em
+			border-radius .5em
+			cursor pointer
+			border 2px solid transparent
+			transition all .2s ease
+			&:hover
+				background white
+				border 2px solid greyblue
+				color greyblue
+	.datepicker
+		margin 0 1em
+		input
+			padding 1em
