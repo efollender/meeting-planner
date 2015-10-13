@@ -1,4 +1,6 @@
 require('babel/register');
 
-const config   = require('./config');
-module.exports = require('./build/webpack/' + config.get('env'));
+module.exports = exports = [
+  require('./build/webpack/client'),
+  require('./build/webpack/server')
+];

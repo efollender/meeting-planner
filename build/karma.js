@@ -1,22 +1,23 @@
-import { argv }      from 'yargs';
-import config        from '../config';
-import webpackConfig from '../webpack.config';
+import config from '../config';
+import webpackConfig from './webpack/client';
 
 const globals = config.get('globals');
 const KARMA_ENTRY_FILE  = 'karma.entry.js';
 
 function makeDefaultConfig () {
+  const preprocessors = {};
+
+  preprocessors[KARMA_ENTRY_FILE] = ['webpack'];
+  preprocessors[config.get('dir_src') + '/**/*.js'] = ['webpack'];
+
   return {
     files : [
       './node_modules/phantomjs-polyfill/bind-polyfill.js',
       './' + KARMA_ENTRY_FILE
     ],
-    singleRun  : !argv.watch,
+    singleRun  : globals.__PROD__,
     frameworks : ['mocha', 'sinon-chai'],
-    preprocessors : {
-      [KARMA_ENTRY_FILE] : ['webpack'],
-      [`${config.get('dir_src')}/**/*.js`] : ['webpack']
-    },
+    preprocessors : preprocessors,
     reporters : ['spec'],
     browsers : ['PhantomJS'],
     webpack : {
