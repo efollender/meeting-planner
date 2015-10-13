@@ -34,6 +34,13 @@ export default class ReserveView extends React.Component {
           <div className="datepicker">
             <Kronos date={Date.now()} />
           </div>
+          <div className="new-meeting-title">
+            <h4><span className="fa fa-pencil"/>What's this about?</h4>
+            <input type="text" id="new-meeting-title"/>
+          </div>
+          <div className="add-attendees">
+            <h4><span className="fa fa-user"/>Add some folks</h4>
+          </div>
         </form>
       </div>
     );

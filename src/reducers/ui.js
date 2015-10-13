@@ -10,7 +10,7 @@ const initialState = {
   },
   loggedIn: false,
   message: null,
-  schedule: null,
+  schedule: [],
   roomStatus: {
     biggie: {
       name: 'biggie',
@@ -24,7 +24,8 @@ const initialState = {
       name: 'lounge',
       taken: false
     }
-  }
+  },
+  allMeetings: []
 };
 
 export default createReducer(initialState, {
@@ -51,6 +52,7 @@ export default createReducer(initialState, {
     };
   },
   [uiConstants.SIGN_IN_INVALID] : (store, data) => {
+    alert('Invalid email');
     return {
       ...store,
       message: data.message,
@@ -75,7 +77,8 @@ export default createReducer(initialState, {
   [uiConstants.ROOM_STATUS_RECEIVED] : (store, data) => {
     return {
       ...store,
-      roomStatus: data
+      roomStatus: data[0],
+      allMeetings: data[1]
     };
   }
 });

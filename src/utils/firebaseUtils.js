@@ -46,6 +46,10 @@ export function getSchedule(data, cb) {
   axios.get(`https://www.googleapis.com/calendar/v3/calendars/primary/events?access_token=${token}&timeMin=${theDate}&timeMax=${timeMax}&orderBy=startTime&singleEvents=true`)
     .then((res) => {
       cb(res.data.items);
+    })
+    .catch((error) => {
+      console.log('an error occured', error);
+      if (error.hasOwnProperty('data')) cb({error: error.data.error.code});
     });
 }
 
@@ -65,10 +69,22 @@ export function getTodayEvents(data, cb) {
   });
 }
 
+export function getCalendars(data) {
+  const token = encodeURIComponent(data);
+  return FBRef.child('meetingplanner/calendars').once('value', snapshot => {
+    if (snapshot.val()) return snapshot.val();
+    return axios.get(`https://www.googleapis.com/calendar/v3/users/me/calendarList?access_token=${token}&fields=items%2Fid`)
+      .then(res => {
+        return res.data.items;
+      });
+  });
+}
+
 export function checkRooms(data, cb) {
   const token = encodeURIComponent(data);
   const currently = Date.parse(new Date());
   const rooms = ['biggie', 'smalls', 'lounge'];
+  const allMeetings = [];
   axios.get(`https://www.googleapis.com/calendar/v3/users/me/calendarList?access_token=${token}&fields=items%2Fid`)
     .then(res => {
       res.data.items.map(item => {
@@ -80,19 +96,21 @@ export function checkRooms(data, cb) {
           room: rooms
         };
         getTodayEvents(calData, event => {
+          allMeetings.push(event);
           const {start, end} = event;
           if ( start.dateTime && end.dateTime) {
-            // console.log(start.dateTime);
-            console.log('an evemt', Date.parse(start.dateTime), currently);
             if ((Date.parse(start.dateTime) < currently) && (Date.parse(end.dateTime) > currently)) {
               const theRoom = whichRoom(event.location);
               if (roomStatus[theRoom]) {
                 roomStatus[theRoom].taken = true;
-                roomStatus[theRoom].details = event.summary;
+                roomStatus[theRoom].details = {
+                  name: event.summary,
+                  attendees: event.attendees
+                };
               }
             }
           }
-          cb(roomStatus);
+          cb(roomStatus, allMeetings);
         });
       });
     });
@@ -150,9 +168,3 @@ export function logOut() {
 }
 
 
-// get todays events
-// filter by location
-// compare start and end time with now
-// ------------
-// get all calendars (https://www.googleapis.com/calendar/v3/users/me/calendarList)
-// for each calendar get events today(https://www.googleapis.com/calendar/v3/calendars/primary/events?access_token=${token}&timeMin=${todayam}&timeMax=${todaypm})

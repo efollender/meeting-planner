@@ -53,10 +53,10 @@ export function scheduleReceived(sched) {
   };
 }
 
-export function roomStatusReceived(status) {
+export function roomStatusReceived(status, meetings) {
   return {
     type: uiConstants.ROOM_STATUS_RECEIVED,
-    data: status
+    data: [status, meetings]
   };
 }
 
@@ -65,8 +65,8 @@ export function checkRooms() {
     return fbUtils.getSession(res => {
       if (res.google) {
         const token = res.google.accessToken;
-        return fbUtils.checkRooms(token, rooms => {
-          dispatch(roomStatusReceived(rooms));
+        return fbUtils.checkRooms(token, (rooms, meetings) => {
+          dispatch(roomStatusReceived(rooms, meetings));
         });
       }
     });

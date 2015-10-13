@@ -17,25 +17,41 @@ class HomeView extends Component {
   componentDidMount() {
     this.props.dispatch(actions.checkRooms());
   }
+  renderAttendees(attendees) {
+    return attendees.map( person => {
+      if (person.displayName) {
+        if (person.displayName.split(' ').length > 1) {
+          return <span>{person.displayName}<br/></span>;
+        }
+      }
+    });
+  }
+  renderRoomStatus() {
+    const {roomStatus} = this.props.ui;
+    return Object.keys(roomStatus).map(room => {
+      return (
+        <div className={classNames('room', {
+          available: !roomStatus[room].taken,
+          occupied: roomStatus[room].taken
+        })} data-room={roomStatus[room].name}>
+          {roomStatus[room].details &&
+            <p>
+              {roomStatus[room].details.name}<br/><br/>
+              {this.renderAttendees(roomStatus[room].details.attendees)}
+            </p>
+          }
+        </div>
+      );
+    });
+  }
   render () {
-    const {loggedIn, roomStatus} = this.props.ui;
+    const {loggedIn} = this.props.ui;
     return (
       <div className="home-container">
         {loggedIn &&
           <div className="current-status">
             <h3>Current room status</h3>
-            <div className={classNames('room', {
-              available: !roomStatus.lounge.taken,
-              occupied: roomStatus.lounge.taken
-            })} data-room="Lounge" />
-            <div className={classNames('room', {
-              available: !roomStatus.smalls.taken,
-              occupied: roomStatus.smalls.taken
-            })} data-room="Smalls" />
-            <div className={classNames('room', {
-              available: !roomStatus.biggie.taken,
-              occupied: roomStatus.biggie.taken
-            })} data-room="Biggie" />
+            {this.renderRoomStatus()}
           </div>
         }
       </div>

@@ -12,7 +12,39 @@
     color darkblue
     border-radius .5em
     padding .5em
+    padding-left calc(100px + 1em)
     margin-bottom 1em
+    position relative
+    transform scaleY(0)
+    transform-origin 0 0 0
+    animation size-up .3s linear forwards
+    for n in (0..20)
+    	&:nth-child({n})
+    		animation-delay .1s * n
+    &:before
+    	display inline-block
+    	content ''
+    	position absolute
+    	left 0
+    	top 0
+    	bottom 0
+    	width 100px
+    	border-radius .5em 0 0 .5em
+    	background-size cover
+   		background-color greyblue
+   		background-blend-mode screen
+    &.biggie
+    	&:before
+    		background-position left center
+    		background-image url('http://25.media.tumblr.com/29b425066958d93909c1b1f325cf5bde/tumblr_mjh0hzCHG01qdlfp4o1_500.gif')
+    &.smalls
+    	&:before
+    		background-position center top
+    		background-image url('http://media.giphy.com/media/VJqD7jnEZpHgI/giphy.gif')
+   	&.lounge
+    	&:before
+    		background-position center top
+    		background-image url('http://25.media.tumblr.com/c0029a29a5d8a334b38b466acba4231c/tumblr_mhpxg5kHaN1rxhz9do1_500.gif')
   .attendee
     display inline-block
     position relative
@@ -21,3 +53,12 @@
         content ', '
         display inline-block
         margin-right .5em
+ 	.meeting-time
+ 		display inline-block
+ 		white-space pre
+
+@keyframes size-up
+	from
+		transform scaleY(0)
+	to
+		transform scaleY(1)

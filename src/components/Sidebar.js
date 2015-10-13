@@ -46,7 +46,7 @@ export default class Sidebar extends Component {
                 Reserve a room
               </a>
             </li>
-            <li>
+            <li onClick={()=>history.pushState(null, '/all')}>
               <a>
                 <span className="fa fa-bars"/>Reservation Schedule
               </a>
