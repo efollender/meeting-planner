@@ -36,6 +36,9 @@ class CalendarView extends Component {
                   {el.start &&
                     <p>{this.renderDateString(el.start.dateTime)}</p>
                   }
+                  {el.attendees.map(person => {
+                    return <p key={person.id + Math.random().toString()}>{person.displayName}</p>;
+                  })}
                   <p>{el.location}</p>
                 </div>
                );

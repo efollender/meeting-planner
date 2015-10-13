@@ -73,6 +73,17 @@ export function checkRooms() {
   };
 }
 
+// export function getUserInfo(userID) {
+//   return dispatch => {
+//     return fbUtils.getUser( res => {
+//       if (res.userImg) return res;
+//       return fbUtils.getUserFromGoogle(userID, res => {
+//         return res.data;
+//       });
+//     });
+//   };
+// }
+
 export function getSchedule() {
   return dispatch => {
     dispatch(scheduleRequest());
