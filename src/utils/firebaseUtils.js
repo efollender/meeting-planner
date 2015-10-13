@@ -1,4 +1,3 @@
-// import axios from 'axios';
 import Firebase from 'firebase';
 import creds from '../../lib/creds';
 import axios from 'axios';
@@ -30,12 +29,22 @@ function checkDomain(email) {
   return false;
 }
 
+function whichRoom(location) {
+  let response = null;
+  Object.keys(roomStatus).map( room => {
+    // const reg = new RegExp('(' + room + ')', 'g');
+    // console.log('the ex', room);
+    if ((location.toLowerCase()).search(room) > -1) response = room;
+  });
+  return response;
+}
+
 export function getSchedule(data, cb) {
   const token = encodeURIComponent(data);
   const theDate = (new Date()).toISOString();
   const timeMax = (new Date(theYear, theMonth, theDay + 7, 17, 0, 0)).toISOString();
   axios.get(`https://www.googleapis.com/calendar/v3/calendars/primary/events?access_token=${token}&timeMin=${theDate}&timeMax=${timeMax}&orderBy=startTime&singleEvents=true`)
-    .then((res)=>{
+    .then((res) => {
       cb(res.data.items);
     });
 }
@@ -76,9 +85,10 @@ export function checkRooms(data, cb) {
             // console.log(start.dateTime);
             console.log('an evemt', Date.parse(start.dateTime), currently);
             if ((Date.parse(start.dateTime) < currently) && (Date.parse(end.dateTime) > currently)) {
-              if (roomStatus[event.location.toLowerCase()]) {
-                roomStatus[event.location.toLowerCase()].taken = true;
-                roomStatus[event.location.toLowerCase()].details = event.summary;
+              const theRoom = whichRoom(event.location);
+              if (roomStatus[theRoom]) {
+                roomStatus[theRoom].taken = true;
+                roomStatus[theRoom].details = event.summary;
               }
             }
           }
