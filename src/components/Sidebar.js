@@ -60,7 +60,12 @@ export default class Sidebar extends Component {
         }
         <div className="current-user">
           {session.userImage &&
-            <img src={session.userImage}/>
+            <div 
+            style={{
+              backgroundImage: `url(${session.userImage}`
+            }}
+            className="profile-img"
+            />
           }
           <div className="welcome">
             <h3>BU Rooms</h3>
