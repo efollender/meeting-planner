@@ -6,7 +6,7 @@
 :local(.container)
   width 25%
   display inline-block
-  background coral
+  background mediumgrey
   float left
   position fixed
   top 0
@@ -17,16 +17,16 @@
   box-shadow 2px 0 10px #ccc
   transform-style preserve-3d
   .current-user
-    background greyblue
-  h3
-    width 75%
-    display inline-block
-    padding-left 1.2rem
-    margin 0
-    line-height 1
+    background darkgrey
+    .welcome
+      width 75%
+      display inline-block
+      padding-left 1.2rem
+      h3
+        margin 0
+        line-height 1
   img
     width 25%
-    // border-radius 100%
     display inline-block
   button
     outline none
@@ -36,20 +36,38 @@
     border none
     width 100%
     padding 1em
+  .sidebar-date
+    display inline-block
+    width 100%
+    background blue
+    color white
+    bold()
+    text-align center
+    .month
+      font-size 2.5em
+      display block
+      margin 0
+      padding 0
+      line-height 1
+    .day
+      margin 0
+      padding 0
+      line-height 1
+      display block
+      font-size 6em
   .main-nav
     box-shadow 0 -4px 3px rgba(#333, .1)
   li
-    font-weight 300
+    regular()
     color white
-    font-size 2rem
     cursor pointer
-    background darken(mauve, 10)
+    background greyblue
     a
       color #EFEFEF
       display inline-block
       width 100%
       padding 1em
-      background coral
+      background greyblue
       transition all .3s ease
     span
       margin-right .5em
@@ -57,5 +75,38 @@
       margin-bottom 1px
     &:hover
       a
+        background blue
         box-shadow -4px 0 5px rgba(#333, .2)
         transform translateX(15px)
+  .sidebar-availability
+    width 100%
+    border-left 1em solid mediumgrey
+    margin-top 1em
+    td
+      padding 1em
+      text-transform capitalize
+    tr
+      &.room
+        background darkgrey
+    .availability
+      text-align right
+      p
+        display inline-block
+      &:after
+        content ''
+        height 1em
+        width 1em
+        border-radius 100%
+        display inline-block
+        margin-left 1em
+    .available
+      .availability
+        width 75%
+        color green
+        &:after
+          background green
+    .occupied
+      .availability
+        color coral
+        &:after
+          background coral
