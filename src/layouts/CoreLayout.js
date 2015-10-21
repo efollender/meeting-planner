@@ -43,7 +43,9 @@ class CoreLayout extends Component {
             signIn={::this._signIn} />
           <div className="main-content text-center">
             <h1 onClick={()=>history.pushState(null, '/')}>BU Meeting Planner</h1>
-            {children}
+            {ui.loggedIn &&
+              <div>{children}</div>
+            }
           </div>
         </div>
       </div>

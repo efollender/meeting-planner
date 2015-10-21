@@ -6,7 +6,11 @@
   padding 0 2em
   text-align left
   .schedule-container
-    // -webkit-column-count 2
+    position relative
+    .expanded
+      position initial
+    .collapsed
+      position relative
   .calendar-event
     background lighten(greyblue, 15)
     color darkblue
@@ -19,32 +23,44 @@
     transform-origin 0 0 0
     animation size-up .3s linear forwards
     for n in (0..20)
-    	&:nth-child({n})
-    		animation-delay .1s * n
+      &:nth-child({n})
+        animation-delay .1s * n
     &:before
-    	display inline-block
-    	content ''
-    	position absolute
-    	left 0
-    	top 0
-    	bottom 0
-    	width 100px
-    	border-radius .5em 0 0 .5em
-    	background-size cover
-   		background-color greyblue
-   		background-blend-mode screen
+      display inline-block
+      content ''
+      position absolute
+      left 0
+      top 0
+      bottom 0
+      width 100px
+      border-radius .5em 0 0 .5em
+      background-size cover
+      background-color greyblue
+      background-blend-mode screen
+      padding 45px 2.2rem
+      font-size 2rem
     &.biggie
-    	&:before
-    		background-position left center
-    		background-image url('http://25.media.tumblr.com/29b425066958d93909c1b1f325cf5bde/tumblr_mjh0hzCHG01qdlfp4o1_500.gif')
+      &:before
+        content 'Biggie'
+        background-position left center
+        background-image url('http://25.media.tumblr.com/29b425066958d93909c1b1f325cf5bde/tumblr_mjh0hzCHG01qdlfp4o1_500.gif')
     &.smalls
-    	&:before
-    		background-position center top
-    		background-image url('http://media.giphy.com/media/VJqD7jnEZpHgI/giphy.gif')
-   	&.lounge
-    	&:before
-    		background-position center top
-    		background-image url('http://25.media.tumblr.com/c0029a29a5d8a334b38b466acba4231c/tumblr_mhpxg5kHaN1rxhz9do1_500.gif')
+      &:before
+        content 'Smalls'
+        background-color coral
+        background-position center top
+        background-image url('http://media.giphy.com/media/VJqD7jnEZpHgI/giphy.gif')
+    &.lounge
+      &:before
+        content 'Lounge'
+        background-color mauve
+        background-position center top
+        background-image url('http://25.media.tumblr.com/c0029a29a5d8a334b38b466acba4231c/tumblr_mhpxg5kHaN1rxhz9do1_500.gif')
+    &.clone
+      position absolute
+      top 0
+      left 0
+      right 0
   .attendee
     display inline-block
     position relative
@@ -53,12 +69,14 @@
         content ', '
         display inline-block
         margin-right .5em
- 	.meeting-time
- 		display inline-block
- 		white-space pre
+  .meeting-time
+    display inline-block
+    white-space pre
+  .react-kronos
+    margin-bottom 1em
 
 @keyframes size-up
-	from
-		transform scaleY(0)
-	to
-		transform scaleY(1)
+  from
+    transform scaleY(0)
+  to
+    transform scaleY(1)

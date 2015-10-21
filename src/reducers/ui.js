@@ -25,12 +25,39 @@ const initialState = {
       taken: false
     }
   },
-  allMeetings: []
+  allMeetings: [],
+  dateLookup: {},
+  availability: {
+    biggie: {
+      name: 'biggie',
+      taken: false
+    },
+    smalls: {
+      name: 'smalls',
+      taken: false
+    },
+    lounge: {
+      name: 'lounge',
+      taken: false
+    }
+  }
 };
 
 export default createReducer(initialState, {
-  [uiConstants.SIGN_IN_REQUEST] : (store) => {
+  [uiConstants.AVAILABILITY_REQUEST] : (store) => {
     return store;
+  },
+  [uiConstants.AVAILABILITY_RECEIVED] : (store, data) => {
+    return {
+      ...store,
+      availability: data
+    };
+  },
+  [uiConstants.SIGN_IN_REQUEST] : (store) => {
+    return {
+      ...store,
+      loggedIn: false
+    };
   },
   [uiConstants.SIGN_IN_SUCCESS] : (store, data) => {
     return {
@@ -52,7 +79,6 @@ export default createReducer(initialState, {
     };
   },
   [uiConstants.SIGN_IN_INVALID] : (store, data) => {
-    alert('Invalid email');
     return {
       ...store,
       message: data.message,
@@ -62,23 +88,57 @@ export default createReducer(initialState, {
   [uiConstants.LOG_OUT] : (store) => {
     return {
       ...store,
-      session: initialState.session,
-      loggedIn: false,
-      message: null,
-      schedule: null
+      ...initialState
+    };
+  },
+  [uiConstants.SCHEDULE_REQUEST] : (store) => {
+    return {
+      ...store,
+      loading: true
     };
   },
   [uiConstants.SCHEDULE_RECEIVED] : (store, data) => {
     return {
       ...store,
-      schedule: data
+      schedule: data,
+      loading: false,
+      lastScheduleRequest: Date.parse(new Date())
+    };
+  },
+  [uiConstants.ROOM_STATUS_REQUEST] : (store) => {
+    return {
+      ...store,
+      loading: true
     };
   },
   [uiConstants.ROOM_STATUS_RECEIVED] : (store, data) => {
     return {
       ...store,
       roomStatus: data[0],
-      allMeetings: data[1]
+      allMeetings: data[1].items,
+      dateLookup: data[1],
+      loading: false,
+      lastRoomRequest: Date.parse(new Date())
+    };
+  },
+  [uiConstants.ROOM_STATUS_ERROR] : (store, data) => {
+    return {
+      ...store,
+      error: data,
+      loggedIn: false
+    };
+  },
+  [uiConstants.DATE_LOOKUP_REQUEST] : (store) => {
+    return {
+      ...store,
+      loading: true
+    };
+  },
+  [uiConstants.DATE_LOOKUP_RECEIVED] : (store, data) => {
+    return {
+      ...store,
+      dateLookup: data,
+      loading: false
     };
   }
 });

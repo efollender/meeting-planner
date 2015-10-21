@@ -22,10 +22,15 @@
 			cursor pointer
 			border 2px solid transparent
 			transition all .2s ease
-			&:hover
+			&:hover:not(.disabled)
 				background white
 				border 2px solid greyblue
 				color greyblue
+			&.disabled
+				background #ccc
+				color white
+				transition all .2s ease
+				cursor default
 	.datepicker
 		margin 0 1em
 		input
@@ -36,4 +41,4 @@
 			padding 1.6rem
 			border-radius .5em
 			border 1px solid lighten(greyblue, 25)
-			
+		

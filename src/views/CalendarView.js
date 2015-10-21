@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as uiActions from 'actions/ui';
 import StyleSheet from 'styles/calendarView.styl';
 import moment from 'moment';
+import MeetingItem from 'components/MeetingItem';
 
 const mapStateToProps = (state) => ({
   ui : state.ui
@@ -17,7 +18,9 @@ class CalendarView extends Component {
     super(props);
   }
   componentDidMount() {
-    this.props.dispatch(uiActions.getSchedule());
+    const {dispatch, ui} = this.props;
+    const difference = moment(ui.lastScheduleRequest).diff(moment(), 'minutes');
+    if ((difference > 1) || (ui.schedule.length === 0)) { dispatch(uiActions.getSchedule()); }
   }
   shouldComponentUpdate(props) {
     const {ui} = this.props;
@@ -27,7 +30,7 @@ class CalendarView extends Component {
     if (this.props.ui.schedule.hasOwnProperty('error')) {
       return (
         <div>
-          <p>Your session has been timed out. Please login again.</p>
+          <p>Your session has timed out. Please login again.</p>
           <button
             onClick={()=>this.props.dispatch(uiActions.signIn())}>
             Re-authorize
@@ -35,15 +38,6 @@ class CalendarView extends Component {
         </div>
       );
     }
-  }
-  renderAttendees(attendees) {
-    return attendees.map( person => {
-      if (person.displayName) {
-        if (person.displayName.split(' ').length > 1) {
-          return <p  className="attendee" key={person.email + Math.random().toString()}>{person.displayName}</p>;
-        }
-      }
-    });
   }
   render () {
     const {schedule} = this.props.ui;
@@ -54,21 +48,8 @@ class CalendarView extends Component {
         {this.renderError()}
         {(schedule && !error) &&
           <div className="schedule-container">
-           {schedule.map((el, index) => {
-             if (el.summary) {
-               return (
-                <div className="calendar-event" key={index}>
-                  <h5>{el.summary}</h5>
-                  {el.start &&
-                    <p>{moment(el.start.dateTime).format('MMM D, YYYY h:mm a')}</p>
-                  }
-                  {el.attendees &&
-                    <div>{this.renderAttendees(el.attendees)}</div>
-                  }
-                  <p>{el.location}</p>
-                </div>
-               );
-             }
+           {schedule.map((el) => {
+             return <MeetingItem {...el} key={el.id}/>;
            })}
           </div>
         }

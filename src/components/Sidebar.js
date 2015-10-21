@@ -35,18 +35,18 @@ export default class Sidebar extends Component {
         <div className="main-nav">
           {loggedIn &&
           <ul>
-            <li onClick={()=>history.pushState(null, '/schedule')}>
+            <li onClick={()=>history.pushState({...this.props}, '/schedule')}>
               <a>
                 <span className="fa fa-calendar"/>Your Schedule
               </a>
             </li>
-            <li onClick={()=>history.pushState(null, '/reserve')}>
+            <li onClick={()=>history.pushState({...this.props}, '/reserve')}>
               <a>
                 <span className="fa fa-calendar-plus-o"/>
                 Reserve a room
               </a>
             </li>
-            <li onClick={()=>history.pushState(null, '/all')}>
+            <li onClick={()=>history.pushState({...this.props}, '/all')}>
               <a>
                 <span className="fa fa-bars"/>Reservation Schedule
               </a>
