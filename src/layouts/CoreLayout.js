@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import 'styles/core.scss';
 import 'styles/core.styl';
 import Sidebar from 'components/Sidebar';
+import LoginRequired from 'components/LoginRequired';
 import * as uiActions from 'actions/ui';
 
 const mapStateToProps = (state) => ({
@@ -37,16 +38,22 @@ class CoreLayout extends Component {
     return (
       <div className='page-container'>
         <div className='view-container'>
-          <Sidebar {...ui}
-            history={history}
-            signOut={::this._signOut}
-            signIn={::this._signIn} />
-          <div className="main-content text-center">
-            <h1 onClick={()=>history.pushState(null, '/')}>BU Meeting Planner</h1>
-            {ui.loggedIn &&
-              <div>{children}</div>
+          {!ui.loggedIn &&
+            <LoginRequired/>
+          }
+          {ui.loggedIn &&
+            <div>
+              <Sidebar {...ui}
+                dispatch={::this.props.dispatch}
+                history={history}
+                signOut={::this._signOut}
+                signIn={::this._signIn} />
+              <div className="main-content text-center">
+                <h1 onClick={()=>history.pushState(null, '/')}>BU Meeting Planner</h1>
+                {children}
+              </div>
+            </div>
             }
-          </div>
         </div>
       </div>
     );

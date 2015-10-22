@@ -2,6 +2,7 @@ import React, {PropTypes, Component} from 'react';
 import classNames from 'classnames';
 import StyleSheet from 'styles/sidebar.styl';
 import moment from 'moment';
+import * as actions from 'actions/ui';
 
 export default class Sidebar extends Component {
   static propTypes = {
@@ -10,10 +11,16 @@ export default class Sidebar extends Component {
     message: PropTypes.object,
     signIn: PropTypes.func,
     signOut: PropTypes.func,
-    history: PropTypes.object
+    history: PropTypes.object,
+    roomStatus: PropTypes.object,
+    dispatch: PropTypes.func,
+    lastRoomRequest: PropTypes.number
   }
   constructor(props) {
     super(props);
+  }
+  componentDidMount() {
+    this.props.dispatch(actions.checkRooms());
   }
   renderDate() {
     const month = moment().format('MMMM');
@@ -22,7 +29,7 @@ export default class Sidebar extends Component {
       <div className="sidebar-date">
         <span className="month">{month}</span>
         <span className="day">{day}</span>
-      </div>  
+      </div>
     );
   }
   renderRoomStatus() {
@@ -49,34 +56,27 @@ export default class Sidebar extends Component {
     }
   }
   render() {
-    const {loggedIn, session, history} = this.props;
+    const {session, history, lastRoomRequest} = this.props;
     return (
       <div className={StyleSheet.container}>
-        {!loggedIn &&
-        <form>
-          <h2>Login with your BU email</h2>
-          <button onClick={this.props.signIn}>Sign in with Google</button>
-        </form>
-        }
-        <div className="current-user">
-          {session.userImage &&
-            <div 
-            style={{
-              backgroundImage: `url(${session.userImage}`
-            }}
-            className="profile-img"
-            />
-          }
-          <div className="welcome">
-            <h3>BU Rooms</h3>
-            {session.userName &&
-              <p>Hi, {session.userName}!</p>
-            }
-          </div>
-        </div>
-        {this.renderDate()}
         <div className="main-nav">
-          {loggedIn &&
+          <div className="current-user">
+            {session.userImage &&
+              <div
+              style={{
+                backgroundImage: `url(${session.userImage}`
+              }}
+              className="profile-img"
+              />
+            }
+            <div className="welcome">
+              <h3>BU Rooms</h3>
+              {session.userName &&
+                <p>Hi, {session.userName}!</p>
+              }
+            </div>
+          </div>
+          {this.renderDate()}
           <ul>
             <li onClick={()=>history.pushState({...this.props}, '/schedule')}>
               <a>
@@ -101,9 +101,7 @@ export default class Sidebar extends Component {
               </a>
             </li>
           </ul>
-          }
         </div>
-        {loggedIn &&
           <table className="sidebar-availability">
             <tbody>
               {this.renderRoomStatus()}
@@ -111,12 +109,12 @@ export default class Sidebar extends Component {
             <tfoot>
               <tr>
                 <td colSpan="2">
-                  Availability as of
+                  <h5>Availability</h5>
+                  <h6>{moment(lastRoomRequest).calendar()}</h6>
                 </td>
               </tr>
             </tfoot>
           </table>
-        }
       </div>
     );
   }

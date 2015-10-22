@@ -39,21 +39,21 @@ class ReserveView extends Component {
   renderAvailability() {
     const {availability} = this.props.ui;
     return Object.keys(availability).map((room, key) => {
-      room = availability[room];
+      const theRoom = availability[room];
       return (
         <label
           className={classNames({
-            disabled: room.taken
+            disabled: theRoom.taken
           })}
-          htmlFor={room.name}
+          htmlFor={theRoom.name}
           key={key}>
           <input
-            disabled={room.taken}
+            disabled={theRoom.taken}
             type="radio"
             name="which-room"
-            id={room.name}
-            value={room.name} />
-          <span>{room.name.toUpperCase()}</span>
+            id={theRoom.name}
+            value={theRoom.name} />
+          <span>{theRoom.name.toUpperCase()}</span>
         </label>
       );
     });

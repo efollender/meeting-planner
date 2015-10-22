@@ -183,6 +183,7 @@ export function signIn() {
         dispatch(signInInvalid({message: 'invalid email'}));
       } else {
         dispatch(signInSuccess({...res.authData, schedule: res.schedule}));
+        window.location.reload();
       }
     });
   };

@@ -2,7 +2,6 @@ import React, {Component, PropTypes}       from 'react';
 import classNames from 'classnames';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import * as actions from 'actions/ui';
 
 const mapStateToProps = (state) => ({
   ui : state.ui
@@ -14,9 +13,6 @@ class HomeView extends Component {
   }
   constructor (props) {
     super(props);
-  }
-  componentDidMount() {
-    this.props.dispatch(actions.checkRooms());
   }
   renderAttendees(attendees) {
     return attendees.map( person => {

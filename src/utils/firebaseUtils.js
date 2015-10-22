@@ -111,7 +111,7 @@ export function getCalendars(data, cb) {
 }
 
 export function checkStatus(event, time) {
-  const currently = time || Date.parse(new Date());
+  const currently = time || new Date();
   const {start, end} = event;
   let theRoom;
   // If it has a start and end
@@ -135,7 +135,6 @@ export function checkStatus(event, time) {
 
 export function getAvailability(time, cb) {
   const token = encodeURIComponent(time.token);
-  console.log(time);
   let calsChecked = 0;
   roomStatus = {
     biggie: {
@@ -173,20 +172,6 @@ export function getAvailability(time, cb) {
 }
 
 export function checkRooms(data, cb) {
-  roomStatus = {
-    biggie: {
-      name: 'biggie',
-      taken: false
-    },
-    smalls: {
-      name: 'smalls',
-      taken: false
-    },
-    lounge: {
-      name: 'lounge',
-      taken: false
-    }
-  };
   const token = encodeURIComponent(data.token);
   let calsChecked = 0;
   const timeMin = data.timeMin || (new Date(theYear, theMonth, theDay, 9, 0, 0));
