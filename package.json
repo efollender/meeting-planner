@@ -31,6 +31,7 @@
     "object-assign": "^4.0.1",
     "react": "^0.14.0-rc1",
     "react-dom": "^0.14.0-rc1",
+    "react-fittext": "^0.1.1",
     "react-kronos": "^0.3.1",
     "react-redux": "^3.0.0-alpha",
     "react-router": "^1.0.0-rc1",

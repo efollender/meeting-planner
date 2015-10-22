@@ -3,8 +3,6 @@ import {createConstants} from 'utils';
 export default createConstants(
 	'AVAILABILITY_REQUEST',
 	'AVAILABILITY_RECEIVED',
-  'GET_SESSION',
-  'LOG_OUT',
   'GET_SCHEDULE',
   'GET_ROOM_STATUS',
   'ROOM_STATUS_ERROR',
@@ -14,12 +12,6 @@ export default createConstants(
   'DATE_LOOKUP_RECEIVED',
   'SCHEDULE_REQUEST',
   'SCHEDULE_RECEIVED',
-  'SESSION_REQUEST',
-  'SIGN_IN',
-  'SIGN_IN_REQUEST',
-  'SIGN_IN_ERROR',
-  'SIGN_IN_INVALID',
-  'SIGN_IN_SUCCESS',
-  'USER_INFO_REQUEST',
-  'USER_INFO_RECEIVED'
+  'USER_LIST_REQUEST',
+  'USER_LIST_RECEIVED'
 );

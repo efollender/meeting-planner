@@ -14,37 +14,16 @@ export function availabilityReceived(data) {
   };
 }
 
-export function signInRequest() {
+export function userListRequest() {
   return {
-    type: uiConstants.SIGN_IN_REQUEST
+    type: uiConstants.USER_LIST_REQUEST
   };
 }
 
-export function signInSuccess(res) {
-  fbUtils.persistUser(res);
+export function userListReceived(data) {
   return {
-    type: uiConstants.SIGN_IN_SUCCESS,
-    data: res
-  };
-}
-
-export function signInInvalid(res) {
-  return {
-    type: uiConstants.SIGN_IN_INVALID,
-    data: res
-  };
-}
-
-export function signInError(res) {
-  return {
-    type: uiConstants.SIGN_IN_ERROR,
-    data: res
-  };
-}
-
-export function sessionRequest() {
-  return {
-    type: uiConstants.SESSION_REQUEST
+    type: uiConstants.USER_LIST_RECEIVED,
+    data: data
   };
 }
 
@@ -109,6 +88,15 @@ export function getAvailability(date) {
   };
 }
 
+export function getUserList() {
+  return dispatch => {
+    dispatch(userListRequest());
+    return fbUtils.getUserList(data => {
+      dispatch(userListReceived(data));
+    });
+  };
+}
+
 export function dateLookup(date) {
   return dispatch => {
     dispatch(dateLookupRequest());
@@ -158,40 +146,5 @@ export function getSchedule() {
         });
       }
     });
-  };
-}
-
-export function getSession() {
-  return dispatch => {
-    dispatch(sessionRequest());
-    return fbUtils.getSession( res => {
-      if (res.google) {
-        dispatch(signInSuccess(res));
-      }
-    });
-  };
-}
-
-export function signIn() {
-  return (dispatch) => {
-    dispatch(signInRequest());
-    return fbUtils.signInWithGoogle( res => {
-      if (res.error) {
-        dispatch(signInError({error: res.error}));
-      } else if (!res.valid) {
-        fbUtils.logOut();
-        dispatch(signInInvalid({message: 'invalid email'}));
-      } else {
-        dispatch(signInSuccess({...res.authData, schedule: res.schedule}));
-        window.location.reload();
-      }
-    });
-  };
-}
-
-export function logOut() {
-  fbUtils.logOut();
-  return {
-    type: uiConstants.LOG_OUT
   };
 }

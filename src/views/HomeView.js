@@ -4,11 +4,13 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 
 const mapStateToProps = (state) => ({
-  ui : state.ui
+  ui : state.ui,
+  auth: state.auth
 });
 class HomeView extends Component {
   static propTypes = {
     ui: PropTypes.object,
+    auth: PropTypes.object,
     dispatch: PropTypes.func
   }
   constructor (props) {
@@ -18,13 +20,14 @@ class HomeView extends Component {
     return attendees.map( person => {
       if (person.displayName) {
         if (person.displayName.split(' ').length > 1) {
-          return <span>{person.displayName}<br/></span>;
+          return <span key={person.displayName}>{person.displayName}<br/></span>;
         }
       }
     });
   }
   renderRoomStatus() {
-    const {roomStatus, session} = this.props.ui;
+    const {roomStatus} = this.props.ui;
+    const {session} = this.props.auth;
     return Object.keys(roomStatus).map(room => {
       let attendees = false;
       if (roomStatus[room].details) {
@@ -57,15 +60,13 @@ class HomeView extends Component {
     });
   }
   render () {
-    const {loggedIn, lastRoomRequest} = this.props.ui;
+    const {lastRoomRequest} = this.props.ui;
     return (
       <div className="home-container">
-        {loggedIn &&
           <div className="current-status">
             <h3>Room status {moment(lastRoomRequest).calendar()}</h3>
             {this.renderRoomStatus()}
           </div>
-        }
       </div>
     );
   }

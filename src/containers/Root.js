@@ -5,7 +5,7 @@ import invariant    from 'invariant';
 import routes       from '../routes';
 import { RoutingContext } from 'react-router';
 import { createDevToolsWindow } from '../utils';
-import * as actions from 'actions/ui';
+import * as actions from 'actions/AuthActions';
 import { DevTools, LogMonitor, DebugPanel } from 'redux-devtools/lib/react';
 
 export default class Root extends React.Component {

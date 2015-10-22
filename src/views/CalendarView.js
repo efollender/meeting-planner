@@ -6,12 +6,14 @@ import moment from 'moment';
 import MeetingItem from 'components/MeetingItem';
 
 const mapStateToProps = (state) => ({
-  ui : state.ui
+  ui : state.ui,
+  auth: state.auth
 });
 
 class CalendarView extends Component {
   static propTypes = {
     ui: PropTypes.object,
+    auth: PropTypes.object,
     dispatch: PropTypes.func
   }
   constructor (props) {
@@ -23,29 +25,28 @@ class CalendarView extends Component {
     if ((difference > 1) || (ui.schedule.length === 0)) { dispatch(uiActions.getSchedule()); }
   }
   shouldComponentUpdate(props) {
-    const {ui} = this.props;
-    return ((ui.session !== props.ui.session) || (ui.schedule !== props.ui.schedule));
+    const {auth, ui} = this.props;
+    return ((auth.session !== props.auth.session) || (ui.schedule !== props.ui.schedule));
   }
-  renderError() {
-    if (this.props.ui.schedule.hasOwnProperty('error')) {
-      return (
-        <div>
-          <p>Your session has timed out. Please login again.</p>
-          <button
-            onClick={()=>this.props.dispatch(uiActions.signIn())}>
-            Re-authorize
-          </button>
-        </div>
-      );
-    }
-  }
+  // renderError() {
+  //   if (this.props.ui.schedule.hasOwnProperty('error')) {
+  //     return (
+  //       <div>
+  //         <p>Your session has timed out. Please login again.</p>
+  //         <button
+  //           onClick={()=>this.props.dispatch(uiActions.signIn())}>
+  //           Re-authorize
+  //         </button>
+  //       </div>
+  //     );
+  //   }
+  // }
   render () {
     const {schedule} = this.props.ui;
     const error = schedule.hasOwnProperty('error');
     return (
       <div className={StyleSheet.container}>
         <h3>Your upcoming week</h3>
-        {this.renderError()}
         {(schedule && !error) &&
           <div className="schedule-container">
            {schedule.map((el) => {

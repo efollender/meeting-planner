@@ -2,14 +2,6 @@ import {createReducer} from 'utils';
 import * as uiConstants from 'constants/uiConstants';
 
 const initialState = {
-  session: {
-    userName: null,
-    email: null,
-    token: null,
-    userImage: null
-  },
-  loggedIn: false,
-  message: null,
   schedule: [],
   roomStatus: {
     biggie: {
@@ -51,44 +43,6 @@ export default createReducer(initialState, {
     return {
       ...store,
       availability: data
-    };
-  },
-  [uiConstants.SIGN_IN_REQUEST] : (store) => {
-    return {
-      ...store,
-      loggedIn: false
-    };
-  },
-  [uiConstants.SIGN_IN_SUCCESS] : (store, data) => {
-    return {
-      ...store,
-      loggedIn: true,
-      session: {
-        userName: data.google.displayName,
-        email: data.google.email,
-        userImage: data.google.profileImageURL,
-        token: data.google.accessToken
-      }
-    };
-  },
-  [uiConstants.SIGN_IN_ERROR] : (store, data) => {
-    return {
-      ...store,
-      message: data.error,
-      loggedIn: false
-    };
-  },
-  [uiConstants.SIGN_IN_INVALID] : (store, data) => {
-    return {
-      ...store,
-      message: data.message,
-      loggedIn: false
-    };
-  },
-  [uiConstants.LOG_OUT] : (store) => {
-    return {
-      ...store,
-      ...initialState
     };
   },
   [uiConstants.SCHEDULE_REQUEST] : (store) => {
@@ -139,6 +93,15 @@ export default createReducer(initialState, {
       ...store,
       dateLookup: data,
       loading: false
+    };
+  },
+  [uiConstants.USER_LIST_REQUEST] : (store) => {
+    return store;
+  },
+  [uiConstants.USER_LIST_RECEIVED] : (store, data) => {
+    return {
+      ...store,
+      userList: data
     };
   }
 });

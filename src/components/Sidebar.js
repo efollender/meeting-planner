@@ -2,6 +2,7 @@ import React, {PropTypes, Component} from 'react';
 import classNames from 'classnames';
 import StyleSheet from 'styles/sidebar.styl';
 import moment from 'moment';
+import ReactFitText from 'react-fittext';
 import * as actions from 'actions/ui';
 
 export default class Sidebar extends Component {
@@ -20,15 +21,19 @@ export default class Sidebar extends Component {
     super(props);
   }
   componentDidMount() {
-    this.props.dispatch(actions.checkRooms());
+    setInterval(this.props.dispatch(actions.checkRooms()), 1000);
   }
   renderDate() {
     const month = moment().format('MMMM');
     const day = moment().format('DD');
     return (
       <div className="sidebar-date">
-        <span className="month">{month}</span>
-        <span className="day">{day}</span>
+        <ReactFitText compressor={1.5}>
+          <span className="month">{month}</span>
+        </ReactFitText>
+        <ReactFitText compressor={-0.5}>
+          <span className="day">{day}</span>
+        </ReactFitText>
       </div>
     );
   }
@@ -109,8 +114,8 @@ export default class Sidebar extends Component {
             <tfoot>
               <tr>
                 <td colSpan="2">
-                  <h5>Availability</h5>
-                  <h6>{moment(lastRoomRequest).calendar()}</h6>
+                  <h5>AVAILABILITY</h5>
+                  <h6>Today as of {moment(lastRoomRequest).format('h:mma')}</h6>
                 </td>
               </tr>
             </tfoot>

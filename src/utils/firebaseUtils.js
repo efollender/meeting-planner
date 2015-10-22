@@ -240,6 +240,13 @@ export function signInWithGoogle(cb) {
   });
 }
 
+export function getUserList(cb) {
+  return FBRef.child('meetingplanner/users').once('value', snapshot => {
+    const users = objectToArray(snapshot.val());
+    cb(users);
+  });
+}
+
 export function persistUser(user) {
   const userId = user.google.email.replace(/[^0-9|a-z|A-Z]/g, '');
   FBRef.child('meetingplanner/users').child(userId).update({

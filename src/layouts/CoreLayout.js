@@ -4,10 +4,12 @@ import 'styles/core.scss';
 import 'styles/core.styl';
 import Sidebar from 'components/Sidebar';
 import LoginRequired from 'components/LoginRequired';
-import * as uiActions from 'actions/ui';
+// import * as uiActions from 'actions/ui';
+import * as authActions from 'actions/AuthActions';
 
 const mapStateToProps = (state) => ({
-  ui : state.ui
+  ui : state.ui,
+  auth : state.auth
 });
 
 class CoreLayout extends Component {
@@ -15,6 +17,7 @@ class CoreLayout extends Component {
   static propTypes = {
     dispatch : PropTypes.func,
     ui       : PropTypes.object,
+    auth: PropTypes.object,
     children : PropTypes.element,
     history  : PropTypes.object
   }
@@ -26,24 +29,41 @@ class CoreLayout extends Component {
   }
   _signIn (e) {
     e.preventDefault();
-    this.props.dispatch(uiActions.signIn());
+    this.props.dispatch(authActions.signIn());
   }
   _signOut (e) {
     e.preventDefault();
-    this.props.dispatch(uiActions.logOut());
+    this.props.dispatch(authActions.logOut());
     this.props.history.pushState(null, '/');
   }
   render () {
-    const {history, ui, children} = this.props;
+    const {history, ui, children, auth} = this.props;
+    const {loggedIn} = auth;
     return (
       <div className='page-container'>
         <div className='view-container'>
-          {!ui.loggedIn &&
-            <LoginRequired/>
+          {!loggedIn &&
+            <LoginRequired
+              signIn={::this._signIn}
+            />
           }
-          {ui.loggedIn &&
+          {loggedIn &&
             <div>
-              <Sidebar {...ui}
+              {/* <div className="header">
+                <div className="current-user">
+                    <div
+                    style={{
+                      backgroundImage: `url(${session.userImage}`
+                    }}
+                    className="profile-img"
+                    />
+                  <div className="welcome">
+                    <h3>BU Rooms</h3>
+                      <p>Hi, {session.userName}!</p>
+                  </div>
+                </div>
+              </div> */}
+              <Sidebar {...ui} {...auth}
                 dispatch={::this.props.dispatch}
                 history={history}
                 signOut={::this._signOut}
