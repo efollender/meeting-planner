@@ -138,14 +138,17 @@ class ReserveView extends Component {
                 {this.renderAddedAttendees(this.state.attendees)}
               </div>
             }
-            <span
-              onClick={::this.toggleUsers}
-              className="fa fa-plus" />
             {(userList && showUsers) &&
               <div className="user-modal">
                 {this.renderAttendeeModal(userList)}
               </div>
             }
+            <span
+              onClick={::this.toggleUsers}
+              className={classNames('fa', 'user-toggle', {
+                'fa-plus': !showUsers,
+                'fa-minus': showUsers
+              })} />
             <input type="text"/>
             <h5>Chill. I'm still working on this.</h5>
           </div>
