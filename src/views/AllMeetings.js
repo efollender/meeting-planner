@@ -5,6 +5,7 @@ import * as actions from 'actions/ui';
 import StyleSheet from 'styles/calendarView.styl';
 import moment from 'moment';
 import Kronos from 'react-kronos';
+import AgendaChart from 'components/AgendaChart';
 
 moment.locale('en', {
   calendar : {
@@ -106,7 +107,10 @@ class AllMeetings extends Component {
           <p>Checking reservations. Gimme a sec.</p>
         }
         {(!loading && dateLookup.items) &&
-          <div>{this.renderMeetings(dateLookup.items)}</div>
+          <div>
+            <AgendaChart
+              items={this.filterUnique(dateLookup.items.sort(this.sortMeetings))}/>
+          </div>
         }
       </div>
     );
