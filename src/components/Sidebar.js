@@ -45,7 +45,9 @@ export default class Sidebar extends Component {
           <tr className={classNames('room', {
             available: !roomStatus[room].taken,
             occupied: roomStatus[room].taken
-          })} data-room={roomStatus[room].name}>
+          })}
+            key={`sidebar-${room}`}
+            data-room={roomStatus[room].name}>
             <td>{roomStatus[room].name}</td>
             <td className="availability">
               {roomStatus[room].taken &&

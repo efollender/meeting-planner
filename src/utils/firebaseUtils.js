@@ -68,7 +68,7 @@ export function getUserImage(usr, cb) {
 export function getSchedule(data, cb) {
   const token = encodeURIComponent(data);
   const theDate = (new Date()).toISOString();
-  const timeMax = (new Date(theYear, theMonth, theDay + 7, 17, 0, 0)).toISOString();
+  const timeMax = (new Date(theYear, theMonth, theDay + 7, 18, 0, 0)).toISOString();
   axios.get(`https://www.googleapis.com/calendar/v3/calendars/primary/events?access_token=${token}&timeMin=${theDate}&timeMax=${timeMax}&orderBy=startTime&singleEvents=true`)
     .then((res) => {
       cb(res.data.items);
@@ -151,7 +151,7 @@ export function getAvailability(time, cb) {
     }
   };
   const timeMin = moment(time.date).hour(9).minute(0);
-  const timeMax = moment(time.date).hour(17).minute(0);
+  const timeMax = moment(time.date).hour(18).minute(0);
   getCalendars(token, res => {
     let calendars = res;
     if (typeof(res) === 'object') calendars = objectToArray(res);
@@ -175,7 +175,7 @@ export function checkRooms(data, cb) {
   const token = encodeURIComponent(data.token);
   let calsChecked = 0;
   const timeMin = data.timeMin || (new Date(theYear, theMonth, theDay, 9, 0, 0));
-  const timeMax = data.timeMax || (new Date(theYear, theMonth, theDay, 17, 0, 0));
+  const timeMax = data.timeMax || (new Date(theYear, theMonth, theDay, 18, 0, 0));
   const allMeetings = {
     date: data.timeMin,
     items: []

@@ -37,12 +37,16 @@ const initialState = {
 
 export default createReducer(initialState, {
   [uiConstants.AVAILABILITY_REQUEST] : (store) => {
-    return store;
+    return {
+      ...store,
+      loading: true
+    };
   },
   [uiConstants.AVAILABILITY_RECEIVED] : (store, data) => {
     return {
       ...store,
-      availability: data
+      availability: data,
+      loading: false
     };
   },
   [uiConstants.SCHEDULE_REQUEST] : (store) => {

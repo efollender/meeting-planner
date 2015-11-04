@@ -5,7 +5,8 @@ import * as actions from 'actions/ui';
 import StyleSheet from 'styles/calendarView.styl';
 import moment from 'moment';
 import Kronos from 'react-kronos';
-import AgendaChart from 'components/AgendaChart';
+import MeetingItem from 'components/MeetingItem';
+// import AgendaChart from 'components/AgendaChart';
 
 moment.locale('en', {
   calendar : {
@@ -108,8 +109,9 @@ class AllMeetings extends Component {
         }
         {(!loading && dateLookup.items) &&
           <div>
-            <AgendaChart
-              items={this.filterUnique(dateLookup.items.sort(this.sortMeetings))}/>
+            {this.filterUnique(dateLookup.items.sort(this.sortMeetings)).map((el) => {
+              return <MeetingItem {...el} key={`item-${el.id}`}/>;
+            })}
           </div>
         }
       </div>

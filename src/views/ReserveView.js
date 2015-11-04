@@ -109,7 +109,7 @@ class ReserveView extends Component {
     });
   }
   render () {
-    const {userList} = this.props.ui;
+    const {userList, loading} = this.props.ui;
     const {showUsers} = this.state;
     return (
       <div className={StyleSheet.container}>
@@ -119,7 +119,13 @@ class ReserveView extends Component {
             <Kronos date={this.state.date} onChange={::this.changeDate} />
             <Kronos time={this.state.time} onChange={::this.checkAvailability} />
           </div>
-          <h4><span className="fa fa-map-marker"/>Pick a room</h4>
+          <h4>
+            <span className="fa fa-map-marker"/>
+            Pick a room
+            {loading &&
+              <span className="checking"> checking availability...</span>
+            }
+          </h4>
           <div className="room-choices">
             {this.renderAvailability()}
           </div>
