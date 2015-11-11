@@ -1,12 +1,10 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import classNames from 'classnames';
 import * as actions from 'actions/ui';
-import StyleSheet from 'styles/calendarView.styl';
+import StyleSheet from 'styles/allView.styl';
 import moment from 'moment';
 import Kronos from 'react-kronos';
-import MeetingItem from 'components/MeetingItem';
-// import AgendaChart from 'components/AgendaChart';
+import AgendaChart from 'components/AgendaChart';
 
 moment.locale('en', {
   calendar : {
@@ -67,23 +65,6 @@ class AllMeetings extends Component {
       timeMax: moment(date).hour(17)
     }));
   }
-  renderMeetings(meetings) {
-    return this.filterUnique(meetings.sort(this.sortMeetings)).map(meeting => {
-      return (
-        <div key={meeting.id}
-          className={classNames(meeting.location.toLowerCase(), 'calendar-event')}>
-          <h5>{meeting.summary}</h5>
-          {meeting.start &&
-            <p className='meeting-time'>{moment(meeting.start.dateTime).format('h:mm a')}</p>
-          }
-          {meeting.end &&
-            <p className='meeting-time'> - {moment(meeting.end.dateTime).format('h:mm a')}</p>
-          }
-          <p>{meeting.location}</p>
-        </div>
-      );
-    });
-  }
   renderReAuth() {
     const {loading} = this.props.ui;
     return setTimeout(() => {
@@ -96,22 +77,39 @@ class AllMeetings extends Component {
   }
   render() {
     const {loading, dateLookup} = this.props.ui;
+    const hours = [];
+    for (let i = 8; i < 19; i++) hours.push(i);
     return (
-      <div className={StyleSheet.container}>
-        <h3>All conference room reservations for {moment(this.state.date).calendar()}</h3>
-        <h4>Change date:</h4>
-        <Kronos
-          onChange={::this.changeDisplayDate}
-          returnAs={'ISO'}
-          date={this.state.date} />
-        {loading &&
-          <p>Checking reservations. Gimme a sec.</p>
-        }
+      <div className={StyleSheet.calendar}>
+        <div className="agenda-header">
+          <h3>All conference room reservations for {moment(this.state.date).calendar()}</h3>
+          <h4>Change date:</h4>
+          <Kronos
+            onChange={::this.changeDisplayDate}
+            returnAs={'ISO'}
+            date={this.state.date} />
+          {loading &&
+            <p>Checking reservations. Gimme a sec.</p>
+          }
+        </div>
         {(!loading && dateLookup.items) &&
-          <div>
-            {this.filterUnique(dateLookup.items.sort(this.sortMeetings)).map((el) => {
-              return <MeetingItem {...el} key={`item-${el.id}`}/>;
-            })}
+          <div className="chart-container">
+            <div className="y-axis">
+              {hours.map(hour=>{
+                return <span>{hour}</span>;
+              })}
+            </div>
+            <div className="agenda-container">
+              {Object.keys(dateLookup.items).map(room => {
+                return (
+                  <AgendaChart
+                    key={`room-${room}`}
+                    roomName={room}
+                    currentDate={this.state.date}
+                    items={this.filterUnique(dateLookup.items[room].sort(this.sortMeetings))} />
+                );
+              })}
+            </div>
           </div>
         }
       </div>

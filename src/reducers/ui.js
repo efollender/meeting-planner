@@ -35,6 +35,23 @@ const initialState = {
   }
 };
 
+function sortRooms(meetings) {
+  const roomMeetings = {
+    biggie: [],
+    smalls: [],
+    lounge: []
+  };
+  meetings.map(el =>{
+    Object.keys(roomMeetings).map(room => {
+      const roomReg = new RegExp(room, 'g');
+      if (roomReg.test(el.location.toLowerCase())) {
+        roomMeetings[room].push(el);
+      }
+    });
+  });
+  return roomMeetings;
+}
+
 export default createReducer(initialState, {
   [uiConstants.AVAILABILITY_REQUEST] : (store) => {
     return {
@@ -73,8 +90,11 @@ export default createReducer(initialState, {
     return {
       ...store,
       roomStatus: data[0],
-      allMeetings: data[1].items,
-      dateLookup: data[1],
+      allMeetings: sortRooms(data[1].items),
+      dateLookup: {
+        date: data[1].date,
+        items: sortRooms(data[1].items)
+      },
       loading: false,
       lastRoomRequest: Date.parse(new Date())
     };
@@ -95,7 +115,10 @@ export default createReducer(initialState, {
   [uiConstants.DATE_LOOKUP_RECEIVED] : (store, data) => {
     return {
       ...store,
-      dateLookup: data,
+      dateLookup: {
+        date: data.date,
+        items: sortRooms(data.items)
+      },
       loading: false
     };
   },

@@ -27,7 +27,9 @@ export default class Sidebar extends Component {
     const month = moment().format('MMMM');
     const day = moment().format('DD');
     return (
-      <div className="sidebar-date">
+      <div
+        onClick={()=>history.pushState({...this.props}, '/')}
+        className="sidebar-date">
         <ReactFitText compressor={1.5}>
           <span className="month">{month}</span>
         </ReactFitText>

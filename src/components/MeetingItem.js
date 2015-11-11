@@ -51,16 +51,25 @@ export default class MeetingItem extends Component {
             [meetingLoc]: location
           })}>
           <h5>{summary}</h5>
-          {start &&
+          {(start && start.dateTime) &&
             <p>
               {moment(start.dateTime).format('MMM D, YYYY h:mm a') + ' - '}
               {moment(end.dateTime).format('h:mm a')}
             </p>
           }
+          {(start && start.date) &&
+            <p>
+              {moment(start.date).format('MMM D, YYYY')}
+              <br/>
+              All day
+            </p>
+          }
           {attendees &&
             <div>{this.renderAttendees(attendees)}</div>
           }
-          <p>{location}</p>
+          {location &&
+            <p>{location}</p>
+          }
         </div>
         {/* <div
           className={classNames('calendar-event', 'clone', {

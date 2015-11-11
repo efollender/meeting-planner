@@ -1,52 +1,58 @@
 import React, {PropTypes, Component} from 'react';
-import ReactDOM from 'react-dom';
 import moment from 'moment';
 import StyleSheet from 'styles/agenda.styl';
-import d3 from 'd3';
 
 export default class AgendaChart extends Component {
   static propTypes = {
-    items: PropTypes.array
-  }
-  createChart(items) {
-    const data = [];
-    const barHeight = 20;
-    const x = d3.scale.linear()
-      .domain([0, 8])
-      .range([0, 400]);
-    items.map(item => {
-      if(item.location.toLowerCase() === 'biggie') {
-        data.push(item);
-      }
-    });
-    console.log(data);
-    const chart = ReactDOM.findDOMNode(this.refs.chart);
-    const d3Chart = d3.select(chart)
-      .attr("width", 400)
-      .attr("height", 500);
-    const bar = chart.selectAll("g")
-      .data(data)
-      .enter().append("g")
-      .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
-    bar.append("rect")
-        .attr("width", x)
-        .attr("height", barHeight - 1);
+    items: PropTypes.array,
+    currentDate: PropTypes.number,
+    roomName: PropTypes.string
   }
   render() {
-    this.createChart(this.props.items);
+    const start = moment().hour(8).minutes(0);
+    const {currentDate, items, roomName} = this.props;
+    let currTime;
+    if (moment(currentDate).isSame(moment(), 'day')) {
+      currTime = moment().diff(start, 'hours', true);
+    }
     return (
       <div className={StyleSheet.container}>
-        <svg ref="chart"/>
+        <div className="room-header biggie">
+          <span className="room-title">
+            {roomName}
+          </span>
+        </div>
+        <div className="content-container">
+          {(currTime > 0) &&
+            <div
+              className="current-time"
+              style={{
+                top: `${currTime * 10}%`
+              }}/>
+          }
+          {items.map(item => {
+            const morning = moment(currentDate).hour(8).minutes(0);
+            const fromTop = moment(item.start.dateTime).diff(morning, 'hours', true);
+            const fromBottom = moment(item.end.dateTime).diff(item.start.dateTime, 'hours', true);
+            return (
+              <div
+                key={`agenda-${item.id}`}
+                className="agenda-item"
+                style={{
+                  top: `${(fromTop * 10)}%`,
+                  height: `${(fromBottom * 10)}%`
+                }}>
+                <p className="content">
+                  {item.summary} <br/>
+                  {moment(item.start.dateTime).format('h:mm ')}-
+                  {moment(item.end.dateTime).format(' h:mm')}
+                </p>
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   }
 }
-// {this.props.items.map(item => {
-//  const morning = moment().hour(9).minutes(0);
-//  const eve = moment().hour(17).minutes(0);
-//  const fromTop = moment(item.start.dateTime).diff(morning, 'hours', true);
-//  const fromBottom = moment(item.end.dateTime).diff(eve, 'hours', true);
-//  return (
-    
-//  );
-// })}
+

@@ -11,8 +11,18 @@
       position initial
     .collapsed
       position relative
+  .tabs-container
+    h3
+      cursor pointer
+      display inline-block
+      width 33.33%
+      padding .5em 1em
+      background #ccc
+      &.active
+        background coral
   .calendar-event
     background lighten(greyblue, 15)
+    background-image repeating-linear-gradient(-45deg, transparent, rgba(#333, .05) 10px, transparent 10px, transparent 20px)
     color darkblue
     border-radius .5em
     padding .5em
@@ -42,6 +52,7 @@
     &.biggie
       &:before
         content 'Biggie'
+        background-color greyblue
         background-position left center
         background-image url('http://25.media.tumblr.com/29b425066958d93909c1b1f325cf5bde/tumblr_mjh0hzCHG01qdlfp4o1_500.gif')
     &.smalls
@@ -53,7 +64,7 @@
     &.lounge
       &:before
         content 'Lounge'
-        background-color mauve
+        background-color green
         background-position center top
         background-image url('http://25.media.tumblr.com/c0029a29a5d8a334b38b466acba4231c/tumblr_mhpxg5kHaN1rxhz9do1_500.gif')
     &.clone

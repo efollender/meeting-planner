@@ -49,27 +49,13 @@ class CoreLayout extends Component {
           }
           {loggedIn &&
             <div>
-              {/* <div className="header">
-                <div className="current-user">
-                    <div
-                    style={{
-                      backgroundImage: `url(${session.userImage}`
-                    }}
-                    className="profile-img"
-                    />
-                  <div className="welcome">
-                    <h3>BU Rooms</h3>
-                      <p>Hi, {session.userName}!</p>
-                  </div>
-                </div>
-              </div> */}
               <Sidebar {...ui} {...auth}
                 dispatch={::this.props.dispatch}
                 history={history}
                 signOut={::this._signOut}
                 signIn={::this._signIn} />
               <div className="main-content text-center">
-                <h1 onClick={()=>history.pushState(null, '/')}>BU Meeting Planner</h1>
+                <div className="utility-bar"/>
                 {children}
               </div>
             </div>

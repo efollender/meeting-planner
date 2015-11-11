@@ -1,9 +1,71 @@
 @import 'core'
 
 :local(.container)
-	position relative
-	background blue
-	height 600px
-	width 100%
-	svg
-		fill red
+	width 33.33%
+	display inline-block
+	.room-header
+		text-align center
+		background-blend-mode multiply
+		background-position center center
+		background-size cover
+		width 100%
+		padding-top 60%
+		position relative
+		text-transform capitalize
+		.room-title
+			color white
+			font-size 4.5em
+			position absolute
+			left 0
+			right 0
+			bottom 0
+	.content-container
+		position relative
+		height 100vh
+		width 100%
+		background-color #eee
+		background-image repeating-linear-gradient(0deg, transparent, #ccc 2px, transparent 1px, transparent 10%)
+		.agenda-item
+			position absolute
+			left 0
+			right 0
+			overflow hidden
+			background-image repeating-linear-gradient(-45deg, transparent, rgba(#333, .05) 10px, transparent 10px, transparent 20px)
+			.content
+				position absolute
+				left .5em
+				right .5em
+				top .5em
+		.current-time
+			content ''
+			display inline-block
+			height 4px
+			left 0
+			right 0
+			position absolute
+			background darkgrey
+			z-index 4
+	&:first-child
+		.room-header
+			background-color coral
+			border-bottom 1em solid coral
+			background-image url('http://media.giphy.com/media/VJqD7jnEZpHgI/giphy.gif')
+		.agenda-item
+			background-color coral
+	&:nth-child(2)
+		margin 0
+		.room-header
+			background-color blue
+			border-bottom 1em solid blue
+			background-position center top
+			background-image url('http://25.media.tumblr.com/c0029a29a5d8a334b38b466acba4231c/tumblr_mhpxg5kHaN1rxhz9do1_500.gif')
+		.agenda-item
+			background-color blue
+	&:last-child
+		.room-header
+			background-color green
+			border-bottom 1em solid green
+			background-image url('http://25.media.tumblr.com/29b425066958d93909c1b1f325cf5bde/tumblr_mjh0hzCHG01qdlfp4o1_500.gif')
+		.agenda-item
+			background-color green
+		
