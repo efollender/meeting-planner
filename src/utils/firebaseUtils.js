@@ -70,10 +70,10 @@ export function getSchedule(data, cb) {
   const theDate = (new Date()).toISOString();
   const timeMax = (new Date(theYear, theMonth, theDay + 7, 18, 0, 0)).toISOString();
   axios.get(`https://www.googleapis.com/calendar/v3/calendars/primary/events?access_token=${token}&timeMin=${theDate}&timeMax=${timeMax}&orderBy=startTime&singleEvents=true`)
-    .then((res) => {
+    .then(res => {
       cb(res.data.items);
     })
-    .catch((error) => {
+    .catch(error => {
       if (error.hasOwnProperty('data')) cb({error: error.data.error.code});
     });
 }
@@ -90,6 +90,10 @@ export function getAllEvents(data, cb, timeMin, timeMax) {
       } else {
         cb();
       }
+    })
+    .catch(err => {
+      // console.log(err);
+      cb();
     });
   });
 }
